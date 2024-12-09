@@ -30,3 +30,8 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+RSpec.configure do |config|
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Devise::Test::IntegrationHelpers, type: :feature
+end
