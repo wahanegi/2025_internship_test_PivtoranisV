@@ -73,4 +73,6 @@ Rails.application.configure do
 
   # Defined default url options for Devise
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+
+  config.secret_key_base = ENV["DEVISE_SECRET_KEY"]
 end

@@ -366,6 +366,7 @@ DEPENDENCIES
   cssbundling-rails
   debug
   devise (~> 4.9)
+  dotenv
   factory_bot_rails
   faker
   jbuilder
