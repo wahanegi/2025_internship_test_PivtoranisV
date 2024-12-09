@@ -4,5 +4,6 @@ FactoryBot.define do
     user_name { Faker::Internet.unique.username(specifier: 1..15).gsub(/[^a-zA-Z0-9_]/, '') }
     password { '@password' }
     password_confirmation { '@password' }
+    confirmed_at { Time.current }
   end
 end
