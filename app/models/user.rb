@@ -11,6 +11,8 @@ class User < ApplicationRecord
   validates :user_name, presence: true, uniqueness: true, length: { maximum: 15 },
             format: { with: USER_NAME_FORMAT, message: "only allows letters, numbers, and underscores" }
 
+  validates :email, presence: true, uniqueness: { case_sensitive: true }
+
   validates :password, length: { minimum: 6 },
             format: { with: PASSWORD_SYMBOL_FORMAT, message: "must contain at least one symbol" }
   validates :password, format: {
