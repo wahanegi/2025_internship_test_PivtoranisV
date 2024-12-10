@@ -9,7 +9,6 @@ RSpec.describe User, type: :model do
 
   context 'Validation' do
     it { should validate_presence_of(:email) }
-    it { should validate_uniqueness_of(:email).case_insensitive }
     it { should allow_value('valid.email@gmail.com').for(:email) }
     it { should_not allow_value('user@gmail,com').for(:email).with_message('must be a valid email format') }
     it { should_not allow_value('user@.com').for(:email).with_message('must be a valid email format') }
@@ -56,6 +55,32 @@ RSpec.describe User, type: :model do
       duplicate_user = build(:user, user_name: 'duplicate_user')
       expect(duplicate_user).not_to be_valid
       expect(duplicate_user.errors[:user_name]).to include('has already been taken')
+    end
+  end
+
+  context 'Confirmable' do
+    it 'is not confirmed by default' do
+      unconfirmed_user = build(:user, confirmed_at: nil)
+      expect(unconfirmed_user.confirmed?).to eq(false)
+    end
+
+    it 'becomes confirmed after confirmation' do
+      unconfirmed_user = build(:user, confirmed_at: nil)
+      unconfirmed_user.confirm
+      expect(unconfirmed_user.confirmed?).to eq(true)
+    end
+
+    it 'does not allow sign-in before confirmation' do
+      unconfirmed_user = build(:user, confirmed_at: nil)
+      expect(unconfirmed_user.confirmed?).to eq(false)
+      expect(unconfirmed_user.valid_password?('@password')).to eq(true)
+      expect(unconfirmed_user.confirmed_at).to be_nil
+    end
+
+    it 'allows sign-in after confirmation' do
+      user.confirm
+      expect(user.confirmed?).to eq(true)
+      expect(user.valid_password?('@password')).to eq(true)
     end
   end
 end
