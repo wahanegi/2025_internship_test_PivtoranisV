@@ -48,4 +48,54 @@ RSpec.describe "Api::V1::Tweets", type: :request do
       end
     end
   end
+
+  describe "POST /create" do
+    let!(:user) { create(:user) }
+    let(:valid_attributes) { { content: "This is a valid tweet!", user_id: user.id } }
+    let(:invalid_attributes) { { content: "", user_id: user.id } }
+    let(:headers) { { "Content-Type" => "application/json" } }
+    let(:json_response) { JSON.parse(response.body) }
+
+    context "when the request is valid" do
+      before { post "/api/v1/tweets", params: valid_attributes.to_json, headers: headers }
+
+      it "returns http status created" do
+        expect(response).to have_http_status(:created)
+      end
+
+      it "creates a new tweet" do
+        expect {
+          post "/api/v1/tweets", params: valid_attributes.to_json, headers: headers
+        }.to change(Tweet, :count).by(1)
+      end
+
+      it "returns the correct created tweet content" do
+        expect(json_response['data']['attributes']['content']).to eq(valid_attributes[:content])
+      end
+
+      it "returns the created tweet in JSON:API format" do
+        expect(json_response).to have_key('data')
+        expect(json_response['data'].first).to have_key('attributes')
+        expect(json_response['data'].first).to have_key('relationships')
+      end
+    end
+
+    context "when the request is invalid" do
+      before { post "/api/v1/tweets", params: invalid_attributes.to_json, headers: headers }
+
+      it "does not create a new tweet" do
+        expect {
+          post "/api/v1/tweets", params: invalid_attributes.to_json, headers: headers
+        }.not_to change(Tweet, :count)
+      end
+
+      it "returns http status unprocessable entity" do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "returns error messages in the response" do
+        expect(json_response['errors']).to include("Content can't be blank")
+      end
+    end
+  end
 end
