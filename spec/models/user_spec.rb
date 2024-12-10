@@ -8,17 +8,17 @@ RSpec.describe User, type: :model do
   end
 
   context 'Validation' do
-    it { should validate_presence_of(:email) }
-    it { should validate_uniqueness_of(:email).case_insensitive }
-    it { should allow_value('valid.email@gmail.com').for(:email) }
-    it { should_not allow_value('user@gmail,com').for(:email).with_message('must be a valid email format') }
-    it { should_not allow_value('user@.com').for(:email).with_message('must be a valid email format') }
-    it { should_not allow_value('user name@gmail.com').for(:email).with_message('must be a valid email format') }
+    it { is_expected.to validate_presence_of(:email) }
+    it { is_expected.to allow_value('valid.email@gmail.com').for(:email) }
+    it { is_expected.not_to allow_value('user@gmail,com').for(:email).with_message('must be a valid email format') }
+    it { is_expected.not_to allow_value('user@.com').for(:email).with_message('must be a valid email format') }
+    it { is_expected.not_to allow_value('user name@gmail.com').for(:email).with_message('must be a valid email format') }
 
-    it { should validate_presence_of(:password) }
-    it { should allow_value('!abc123').for(:password) }
-    it { should_not allow_value('abc').for(:password) }
-    it { should_not allow_value('abcdefg').for(:password) }
+    it { is_expected.to validate_presence_of(:password) }
+    it { is_expected.to allow_value('!abc123').for(:password) }
+    it { is_expected.not_to allow_value('abc').for(:password) }
+    it { is_expected.not_to allow_value('abcdefg').for(:password) }
+
     it 'does not allow passwords with repeated characters more than twice' do
       user = build(:user,
                    password: '!aaabcd',
@@ -28,17 +28,18 @@ RSpec.describe User, type: :model do
       expect(user).not_to be_valid
     end
 
-    it { should validate_presence_of(:user_name) }
-    it { should validate_uniqueness_of(:user_name) }
-    it { should validate_length_of(:user_name).is_at_most(15) }
-    it { should allow_value('valid_user123').for(:user_name) }
-    it { should_not allow_value('invalid.user!').for(:user_name).with_message('only allows letters, numbers, and underscores') }
-    it { should_not allow_value('user name').for(:user_name).with_message('only allows letters, numbers, and underscores') }
+    it { is_expected.to validate_presence_of(:user_name) }
+    it { is_expected.to validate_uniqueness_of(:user_name) }
+    it { is_expected.to validate_length_of(:user_name).is_at_most(15) }
+    it { is_expected.to allow_value('valid_user123').for(:user_name) }
+    it { is_expected.not_to allow_value('invalid.user!').for(:user_name).with_message('only allows letters, numbers, and underscores') }
+    it { is_expected.not_to allow_value('user name').for(:user_name).with_message('only allows letters, numbers, and underscores') }
 
     it 'allows exactly 15 characters for user_name' do
       user = build(:user, user_name: 'a' * 15)
       expect(user).to be_valid
     end
+
     it 'does not allow more than 15 characters for user_name' do
       user = build(:user, user_name: 'a' * 16)
       expect(user).not_to be_valid
@@ -56,6 +57,31 @@ RSpec.describe User, type: :model do
       duplicate_user = build(:user, user_name: 'duplicate_user')
       expect(duplicate_user).not_to be_valid
       expect(duplicate_user.errors[:user_name]).to include('has already been taken')
+    end
+  end
+
+  context 'Confirmable' do
+    let(:unconfirmed_user) { build(:user, confirmed_at: nil) }
+
+    it 'is not confirmed by default' do
+      expect(unconfirmed_user.confirmed?).to eq(false)
+    end
+
+    it 'becomes confirmed after confirmation' do
+      unconfirmed_user.confirm
+      expect(unconfirmed_user.confirmed?).to eq(true)
+    end
+
+    it 'does not allow sign-in before confirmation' do
+      expect(unconfirmed_user.confirmed?).to eq(false)
+      expect(unconfirmed_user.valid_password?('@password')).to eq(true)
+      expect(unconfirmed_user.confirmed_at).to be_nil
+    end
+
+    it 'allows sign-in after confirmation' do
+      user.confirm
+      expect(user.confirmed?).to eq(true)
+      expect(user.valid_password?('@password')).to eq(true)
     end
   end
 end
