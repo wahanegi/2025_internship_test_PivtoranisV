@@ -7,6 +7,10 @@ RSpec.describe User, type: :model do
     expect(user.valid?).to eq true
   end
 
+  context 'Associations' do
+    it { is_expected.to have_many(:tweets) }
+  end
+
   context 'Validation' do
     it { is_expected.to validate_presence_of(:email) }
     it { is_expected.to allow_value('valid.email@gmail.com').for(:email) }

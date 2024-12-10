@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :tweet do
-    content { "MyText" }
-    user { nil }
+    content { Faker::Quote.matz[0..254] }
+    association :user
   end
 end
