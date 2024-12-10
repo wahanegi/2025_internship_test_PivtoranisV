@@ -9,6 +9,7 @@ gem "cssbundling-rails"
 gem "devise", "~> 4.9"
 gem "jsbundling-rails"
 gem "jbuilder"
+gem "jsonapi-serializer"
 gem "kamal", require: false
 gem "propshaft"
 gem "pg", "~> 1.1"
