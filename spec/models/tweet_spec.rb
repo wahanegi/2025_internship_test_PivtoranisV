@@ -45,4 +45,12 @@ RSpec.describe Tweet, type: :model do
       expect(tweet.errors[:content]).to include("can't be blank")
     end
   end
+
+  context 'Tweets order' do
+    it 'orders tweets from most recent to oldest' do
+      older_tweet = create(:tweet, created_at: 1.day.ago)
+      newer_tweet = create(:tweet, created_at: Time.now)
+      expect(Tweet.recent).to eq([ newer_tweet, older_tweet ])
+    end
+  end
 end
