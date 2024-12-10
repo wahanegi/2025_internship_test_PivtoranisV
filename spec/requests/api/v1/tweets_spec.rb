@@ -50,11 +50,16 @@ RSpec.describe "Api::V1::Tweets", type: :request do
   end
 
   describe "POST /create" do
+    include Devise::Test::IntegrationHelpers
     let!(:user) { create(:user) }
     let(:valid_attributes) { { content: "This is a valid tweet!", user_id: user.id } }
     let(:invalid_attributes) { { content: "", user_id: user.id } }
     let(:headers) { { "Content-Type" => "application/json" } }
     let(:json_response) { JSON.parse(response.body) }
+
+    before do
+      sign_in user
+    end
 
     context "when the request is valid" do
       before { post "/api/v1/tweets", params: valid_attributes.to_json, headers: headers }
@@ -75,8 +80,8 @@ RSpec.describe "Api::V1::Tweets", type: :request do
 
       it "returns the created tweet in JSON:API format" do
         expect(json_response).to have_key('data')
-        expect(json_response['data'].first).to have_key('attributes')
-        expect(json_response['data'].first).to have_key('relationships')
+        expect(json_response['data']).to have_key('attributes')
+        expect(json_response['data']).to have_key('relationships')
       end
     end
 
