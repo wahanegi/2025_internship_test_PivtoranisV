@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
 
+  has_many :tweets, dependent: :destroy
+
   USER_NAME_FORMAT = /\A[a-zA-Z0-9_]+\z/
   PASSWORD_SYMBOL_FORMAT = /\A(?=.*[^\w\s])[^\s]*\z/
   PASSWORD_REPEATED_CHAR_FORMAT = /\A(?!.*(.)\1\1).*\z/
@@ -12,11 +14,9 @@ class User < ApplicationRecord
             format: { with: USER_NAME_FORMAT, message: "only allows letters, numbers, and underscores" }
 
   validates :email, presence: true, uniqueness: { case_sensitive: false },
-          format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email format" }
+            format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email format" }
 
   validates :password, length: { minimum: 6 },
             format: { with: PASSWORD_SYMBOL_FORMAT, message: "must contain at least one symbol" }
-  validates :password, format: {
-    with: PASSWORD_REPEATED_CHAR_FORMAT,
-    message: "cannot repeat the same character more than twice" }
+  validates :password, format: { with: PASSWORD_REPEATED_CHAR_FORMAT, message: "cannot repeat the same character more than twice" }
 end

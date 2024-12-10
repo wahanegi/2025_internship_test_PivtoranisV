@@ -7,6 +7,17 @@ RSpec.describe User, type: :model do
     expect(user.valid?).to eq true
   end
 
+  context 'Associations' do
+    let!(:tweet1) { create(:tweet, user: user) }
+    let!(:tweet2) { create(:tweet, user: user) }
+
+    it { is_expected.to have_many(:tweets) }
+
+    it 'destroys associated tweets when a user is destroyed' do
+    expect { user.destroy }.to change(Tweet, :count).by(-2)
+    end
+  end
+
   context 'Validation' do
     it { is_expected.to validate_presence_of(:email) }
     it { is_expected.to allow_value('valid.email@gmail.com').for(:email) }
