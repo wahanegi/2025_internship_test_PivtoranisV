@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
 
-  has_many :tweets
+  has_many :tweets, dependent: :destroy
 
   USER_NAME_FORMAT = /\A[a-zA-Z0-9_]+\z/
   PASSWORD_SYMBOL_FORMAT = /\A(?=.*[^\w\s])[^\s]*\z/
