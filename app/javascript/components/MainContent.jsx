@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Col } from 'react-bootstrap';
+import Tweet from './Tweet';
 
 const MainContent = () => {
   const [tweets, setTweets] = useState([]);
@@ -15,12 +16,10 @@ const MainContent = () => {
 
   console.log(tweets);
   return (
-    <Col className="border-end  border-secondary vh-100">
-      <ul>
-        {tweets.map((tweet) => (
-          <li key={tweet.id}>{tweet.attributes.content}</li>
-        ))}
-      </ul>
+    <Col className="border-end border-start border-secondary h-100">
+      {tweets.map((tweet) => (
+        <Tweet key={tweet.id} content={tweet.attributes.content} />
+      ))}
     </Col>
   );
 };
