@@ -1,10 +1,18 @@
 import React from 'react';
+import { Container, Row } from 'react-bootstrap';
+import MainContent from '../MainContent';
+import LeftSideBar from '../LeftSideBar';
+import RightSideBar from '../RightSideBar';
 
 const Home = () => {
   return (
-    <div className="container mt-5">
-      <h1 className="text-success">Hello Twitter</h1>
-    </div>
+    <Container fluid className="my-2">
+      <Row>
+        <LeftSideBar />
+        <MainContent />
+        <RightSideBar />
+      </Row>
+    </Container>
   );
 };
 
