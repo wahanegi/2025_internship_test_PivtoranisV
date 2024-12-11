@@ -32,6 +32,7 @@ const MainContent = () => {
             key={tweet.id}
             content={tweet.attributes.content}
             author={authorName}
+            date={tweet.attributes.created_at}
           />
         );
       })}
