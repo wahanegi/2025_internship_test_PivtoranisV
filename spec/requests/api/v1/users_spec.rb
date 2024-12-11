@@ -18,7 +18,7 @@ RSpec.describe "Api::V1::Users", type: :request do
 
       it "returns the logged-in user's details" do
         json_response = JSON.parse(response.body)
-        expect(json_response['data']['attributes']['email']).to eq(user.email)
+        expect(json_response['data']['attributes']['user_name']).to eq(user.user_name)
       end
     end
 
