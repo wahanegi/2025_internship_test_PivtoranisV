@@ -1,16 +1,16 @@
 import React from 'react';
 import { Container, Row } from 'react-bootstrap';
-import LeftSidebar from '../LeftSideBar';
 import MainContent from '../MainContent';
-import RightSidebar from '../RightSidebar';
+import LeftSideBar from '../LeftSideBar';
+import RightSideBar from '../RightSideBar';
 
 const Home = () => {
   return (
-    <Container fluid>
+    <Container fluid className="my-2">
       <Row>
-        <LeftSidebar />
+        <LeftSideBar />
         <MainContent />
-        <RightSidebar />
+        <RightSideBar />
       </Row>
     </Container>
   );
