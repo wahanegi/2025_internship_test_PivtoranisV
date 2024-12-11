@@ -6,13 +6,15 @@ body {
   @extend .text-white;
 }
 
-.custom-rounded {
-  border-radius: 30px;
+.card-black {
+  background-color: black;
+  color: white;
 }
 
 .tweet {
   transition: background-color 0.2s ease;
 }
+
 .tweet:hover {
   background-color: #414141;
   cursor: pointer;

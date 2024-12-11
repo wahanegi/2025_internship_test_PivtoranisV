@@ -16,7 +16,7 @@ const Tweet = ({ content, author, date }) => {
       : format(parsedDate, 'MMM dd, yy');
 
   return (
-    <section className="tweet border-bottom border-secondary py-3 px-3">
+    <section className="tweet border border-secondary py-3 px-3 card-black my-3">
       <div>
         <p className="mb-1 text-secondary small">
           <span className="fw-bolder fs-6">@{author}</span> · {displayTime}

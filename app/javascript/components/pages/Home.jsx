@@ -7,7 +7,7 @@ import RightSideBar from '../RightSideBar';
 const Home = () => {
   return (
     <Container fluid className="my-2">
-      <Row>
+      <Row className="gap-2">
         <LeftSideBar />
         <MainContent />
         <RightSideBar />
