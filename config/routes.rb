@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "static#home"
   get "up" => "rails/health#show", as: :rails_health_check
+  get "*path", to: "static#home", constraints: ->(req) { !req.xhr? && req.format.html? }
 end
