@@ -104,7 +104,7 @@ const LeftSidebar = ({ user }) => {
           </Dropdown>
         </>
       ) : (
-        <h2>Tweeter</h2>
+        <FaTwitter className="text-primary h1 custom-hover" />
       )}
     </Col>
   );
