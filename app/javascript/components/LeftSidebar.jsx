@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Col, Dropdown, Nav, NavItem, NavLink } from 'react-bootstrap';
 
-const LeftSideBar = ({ user }) => {
+const LeftSidebar = ({ user }) => {
   const handleLogout = async () => {
     try {
       const csrfToken = document.querySelector(
@@ -66,4 +66,4 @@ const LeftSideBar = ({ user }) => {
   );
 };
 
-export default LeftSideBar;
+export default LeftSidebar;

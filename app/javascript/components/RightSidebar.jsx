@@ -3,7 +3,7 @@ import { Col } from 'react-bootstrap';
 import Suggestions from './Suggestions';
 import UserAuthentication from './UserAuthentication';
 
-const RightSideBar = ({ user }) => {
+const RightSidebar = ({ user }) => {
   return (
     <Col xs={4} className="h-100">
       {user ? <Suggestions /> : <UserAuthentication />}
@@ -11,4 +11,4 @@ const RightSideBar = ({ user }) => {
   );
 };
 
-export default RightSideBar;
+export default RightSidebar;
