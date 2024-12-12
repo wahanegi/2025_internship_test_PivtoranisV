@@ -38,7 +38,7 @@ const Home = () => {
     <Container fluid className="my-2">
       <Row className="gap-2">
         <LeftSidebar user={currentUser} />
-        <MainContent />
+        <MainContent user={currentUser} />
         <RightSidebar user={currentUser} />
       </Row>
     </Container>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 
-const AddTweet = () => {
+const AddTweet = ({ user }) => {
   const [tweetData, setTweetData] = useState({ content: '' });
 
   const handleInputChange = (event) => {
@@ -32,21 +32,25 @@ const AddTweet = () => {
   };
 
   return (
-    <Card className="card-black border border-secondary">
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="What is happening?!"
-            value={tweetData.content}
-            onChange={handleInputChange}
-          />
-        </Form.Group>
-        <Button variant="light" className="rounded-pill" type="submit">
-          Post
-        </Button>
-      </Form>
-    </Card>
+    <>
+      {user && (
+        <Card className="card-black border border-secondary">
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Control
+                type="text"
+                placeholder="What is happening?!"
+                value={tweetData.content}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Button variant="light" className="rounded-pill" type="submit">
+              Post
+            </Button>
+          </Form>
+        </Card>
+      )}
+    </>
   );
 };
 

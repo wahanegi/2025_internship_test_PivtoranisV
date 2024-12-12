@@ -4,7 +4,7 @@ import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 const Suggestions = () => {
   return (
     <>
-      <Form inline className="my-5">
+      <Form className="my-5">
         <Row>
           <Col xs="auto">
             <Form.Control

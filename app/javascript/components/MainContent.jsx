@@ -3,7 +3,7 @@ import { Col } from 'react-bootstrap';
 import Tweet from './Tweet';
 import AddTweet from './AddTweet';
 
-const MainContent = () => {
+const MainContent = ({ user }) => {
   const [tweets, setTweets] = useState([]);
   const [authors, setAuthors] = useState([]);
 
@@ -19,7 +19,7 @@ const MainContent = () => {
 
   return (
     <Col className="border-end border-start border-secondary h-100">
-      <AddTweet />
+      <AddTweet user={user} />
       {tweets.map((tweet) => {
         const author = authors.find(
           (author) => author.id === tweet.relationships.user.data.id
