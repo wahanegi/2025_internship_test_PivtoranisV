@@ -14,7 +14,7 @@ class User < ApplicationRecord
             format: { with: USER_NAME_FORMAT, message: "only allows letters, numbers, and underscores" }
 
   validates :email, presence: true, uniqueness: { case_sensitive: false },
-            format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email format" }
+            format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, message: "must be a valid email format" }
 
   validates :password, length: { minimum: 6 },
             format: { with: PASSWORD_SYMBOL_FORMAT, message: "must contain at least one symbol" }
