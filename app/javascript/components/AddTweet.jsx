@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card, Form } from 'react-bootstrap';
+import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 
 const AddTweet = ({ user }) => {
   const [tweetData, setTweetData] = useState({ content: '' });
@@ -34,19 +34,35 @@ const AddTweet = ({ user }) => {
   return (
     <>
       {user && (
-        <Card className="card-black border border-secondary">
+        <Card className="p-3 mb-3 shadow-sm card-black border border-secondary rounded">
+          <div className="d-flex align-items-center mb-3">
+            <span className="fw-bold text-primary">
+              @{user.attributes.user_name}
+            </span>
+          </div>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Control
-                type="text"
+                as="textarea"
+                rows={3}
                 placeholder="What is happening?!"
                 value={tweetData.content}
                 onChange={handleInputChange}
+                className="tweet-textarea bg-secondary"
               />
             </Form.Group>
-            <Button variant="light" className="rounded-pill" type="submit">
-              Post
-            </Button>
+            <Row>
+              <Col className="text-end">
+                <Button
+                  variant="primary"
+                  className="rounded-pill px-4"
+                  type="submit"
+                  disabled={!tweetData.content.trim()}
+                >
+                  Post
+                </Button>
+              </Col>
+            </Row>
           </Form>
         </Card>
       )}

@@ -10,15 +10,11 @@ const Suggestions = () => {
             <Form.Control
               type="text"
               placeholder="Search"
-              className=" mr-sm-2"
+              className="mr-sm-2 bg-secondary border-0"
             />
           </Col>
           <Col xs="auto">
-            <Button
-              type="submit"
-              variant="outline-secondary"
-              className="rounded-pill"
-            >
+            <Button type="submit" variant="primary" className="rounded-pill">
               Search
             </Button>
           </Col>
