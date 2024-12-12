@@ -1,35 +1,79 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 
 const Suggestions = () => {
   return (
     <>
-      <Card style={{ maxWidth: '22rem' }}>
+      <Form inline className="my-5">
+        <Row>
+          <Col xs="auto">
+            <Form.Control
+              type="text"
+              placeholder="Search"
+              className=" mr-sm-2"
+            />
+          </Col>
+          <Col xs="auto">
+            <Button
+              type="submit"
+              variant="outline-secondary"
+              className="rounded-pill"
+            >
+              Search
+            </Button>
+          </Col>
+        </Row>
+      </Form>
+      <Card
+        style={{ maxWidth: '22rem' }}
+        className="card-black border border-secondary"
+      >
         <Card.Body>
-          <Card.Title>Card Title</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">
-            Card Subtitle
+          <Card.Title className="my-2">What’s happening</Card.Title>
+          <Card.Subtitle className="text-secondary mt-4 small">
+            Technology · Trending
           </Card.Subtitle>
           <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            Apple Intelligence
+            <br />
+            <span className="text-secondary small my-0">8,758 posts</span>
           </Card.Text>
-          <Card.Link href="#">Card Link</Card.Link>
-          <Card.Link href="#">Another Link</Card.Link>
+          <Card.Subtitle className="text-secondary mt-4 small">
+            Trending in Ukraine
+          </Card.Subtitle>
+          <Card.Text>
+            Patriot
+            <br />
+            <span className="text-secondary small my-0">85,458 posts</span>
+          </Card.Text>
+          <Card.Subtitle className="text-secondary mt-4 small">
+            Business & finance · Trending
+          </Card.Subtitle>
+          <Card.Text>
+            $GOOGL
+            <br />
+            <span className="text-secondary small my-0">5,345 posts</span>
+          </Card.Text>
         </Card.Body>
       </Card>
-      <Card style={{ maxWidth: '22rem' }}>
+      <Card
+        style={{ maxWidth: '22rem' }}
+        className="card-black border border-secondary mt-5"
+      >
         <Card.Body>
-          <Card.Title>Card Title</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">
-            Card Subtitle
+          <Card.Title className="my-2">Who to follow</Card.Title>
+          <Card.Subtitle className="text-secondary mt-4 small">
+            @Bob
           </Card.Subtitle>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
-          <Card.Link href="#">Card Link</Card.Link>
-          <Card.Link href="#">Another Link</Card.Link>
+          <Card.Text>Follow</Card.Text>
+          <Card.Subtitle className="text-secondary mt-4 small">
+            @Sam
+          </Card.Subtitle>
+          <Card.Text>Follow</Card.Text>
+          <Card.Subtitle className="text-secondary mt-4 small">
+            @Goldie
+          </Card.Subtitle>
+          <Card.Text>Follow</Card.Text>
         </Card.Body>
       </Card>
     </>
