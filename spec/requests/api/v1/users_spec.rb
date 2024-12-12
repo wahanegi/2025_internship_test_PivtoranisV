@@ -25,8 +25,9 @@ RSpec.describe "Api::V1::Users", type: :request do
     context "when the user is not logged in" do
       before { get "/api/v1/users" }
 
-      it "returns http unauthorized" do
-        expect(response).to have_http_status(:unauthorized)
+      it "redirects to the login page" do
+        expect(response).to have_http_status(:found)
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
   end
