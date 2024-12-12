@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import MainContent from '../MainContent';
-import LeftSideBar from '../LeftSideBar';
-import RightSideBar from '../RightSideBar';
+import LeftSidebar from '../LeftSidebar';
+import RightSidebar from '../RightSidebar';
 
 const Home = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -37,9 +37,9 @@ const Home = () => {
   return (
     <Container fluid className="my-2">
       <Row className="gap-2">
-        <LeftSideBar user={currentUser} />
+        <LeftSidebar user={currentUser} />
         <MainContent />
-        <RightSideBar user={currentUser} />
+        <RightSidebar user={currentUser} />
       </Row>
     </Container>
   );
