@@ -34,7 +34,6 @@ const Home = () => {
     fetchCurrentUser();
   }, []);
 
-  console.log(currentUser);
   return (
     <Container fluid className="my-2">
       <Row className="gap-2">
