@@ -24,10 +24,7 @@ const Suggestions = () => {
           </Col>
         </Row>
       </Form>
-      <Card
-        style={{ maxWidth: '22rem' }}
-        className="card-black border border-secondary"
-      >
+      <Card className="card-black border border-secondary me-5">
         <Card.Body>
           <Card.Title className="my-2">What’s happening</Card.Title>
           <Card.Subtitle className="text-secondary mt-4 small">
@@ -56,10 +53,7 @@ const Suggestions = () => {
           </Card.Text>
         </Card.Body>
       </Card>
-      <Card
-        style={{ maxWidth: '22rem' }}
-        className="card-black border border-secondary mt-5"
-      >
+      <Card className="card-black border border-secondary mt-5 me-5">
         <Card.Body>
           <Card.Title className="my-2">Who to follow</Card.Title>
           <Card.Subtitle className="text-secondary mt-4 small">

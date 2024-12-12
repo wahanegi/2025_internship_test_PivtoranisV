@@ -3,10 +3,7 @@ import { Button, Card } from 'react-bootstrap';
 
 const UserAuthentication = () => {
   return (
-    <Card
-      style={{ maxWidth: '22rem' }}
-      className="card-black border border-secondary"
-    >
+    <Card className="card-black border border-secondary me-5">
       <Card.Body>
         <Card.Title className="my-2">New to Tweeter?</Card.Title>
         <Card.Subtitle className="mb-4 text-secondary mt-4 small">
