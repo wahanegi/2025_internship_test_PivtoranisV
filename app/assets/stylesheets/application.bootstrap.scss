@@ -11,11 +11,15 @@ body {
   color: white;
 }
 
-.tweet {
+.custom-hover {
   transition: background-color 0.2s ease;
 }
 
-.tweet:hover {
+.custom-hover:hover {
   background-color: #414141;
   cursor: pointer;
+}
+
+.dropdown-menu {
+  width: 100%;
 }

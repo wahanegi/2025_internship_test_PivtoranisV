@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col } from 'react-bootstrap';
+import { Button, Col, Dropdown, NavItem, NavLink } from 'react-bootstrap';
 
 const LeftSideBar = ({ user }) => {
   const handleLogout = async () => {
@@ -29,17 +29,28 @@ const LeftSideBar = ({ user }) => {
 
   return (
     <Col xs={3} className="h-100">
-      <section>List of navigation mene items</section>
-      <div>
-        <h2>Welcome, @{user?.attributes?.user_name}</h2>
-      </div>
-      <Button
-        onClick={handleLogout}
-        variant="outline-secondary"
-        className="rounded-pill"
+      <Dropdown
+        as={NavItem}
+        className="card-black border border-secondary rounded-pill custom-hover"
       >
-        Log Out
-      </Button>
+        <Dropdown.Toggle
+          as={NavLink}
+          className="text-white py-2 px-4 w-100 text-center"
+        >
+          Hi, @{user?.attributes?.user_name}
+        </Dropdown.Toggle>
+        <Dropdown.Menu className="bg-dark rounded shadow-lg">
+          <Dropdown.Item>
+            <Button
+              onClick={handleLogout}
+              variant="outline-light"
+              className="w-100 rounded-pill"
+            >
+              Log Out
+            </Button>
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
     </Col>
   );
 };
