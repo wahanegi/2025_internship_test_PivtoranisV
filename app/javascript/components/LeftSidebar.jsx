@@ -1,5 +1,14 @@
 import React from 'react';
-import { Button, Col, Dropdown, Nav, NavItem, NavLink } from 'react-bootstrap';
+import {
+  Button,
+  Col,
+  Container,
+  Dropdown,
+  Navbar,
+  NavItem,
+  NavLink,
+} from 'react-bootstrap';
+import { FaTwitter, FaHome, FaSearch, FaRegBell, FaUser } from 'react-icons/fa';
 
 const LeftSidebar = ({ user }) => {
   const handleLogout = async () => {
@@ -28,17 +37,52 @@ const LeftSidebar = ({ user }) => {
   };
 
   return (
-    <Col xs={3} className="h-100 overflow-hidden my-2">
+    <Col xs={3} className="h-100 overflow-hidden my-2 ms-5">
       {user ? (
         <>
-          <Nav variant="tabs" className="flex-column mb-5">
-            <Nav.Link eventKey="link-1">Twitter</Nav.Link>
-            <Nav.Link eventKey="link-2">Settings</Nav.Link>
-            <Nav.Link eventKey="link-3">Notifications</Nav.Link>
-          </Nav>
+          <Navbar>
+            <Container>
+              <Navbar.Brand href="/">
+                <FaTwitter className="text-primary h1 custom-hover" />
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          <Navbar className="w-75 custom-hover">
+            <Container>
+              <Navbar.Brand href="/">
+                <FaHome className="text-primary h2 rounded" />
+                <span className="ms-4 text-light h4">Home</span>
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          <Navbar className="w-75 custom-hover">
+            <Container>
+              <Navbar.Brand href="/">
+                <FaSearch className="text-primary h2 rounded" />
+                <span className="ms-4 text-light h4">Explore</span>
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          <Navbar className="custom-hover">
+            <Container>
+              <Navbar.Brand href="/">
+                <FaRegBell className="text-primary h2 rounded" />
+                <span className="ms-4 text-light h4">Notifications</span>
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          <Navbar className="w-75 custom-hover">
+            <Container>
+              <Navbar.Brand href="/">
+                <FaUser className="text-primary h2 rounded" />
+                <span className="ms-4 text-light h4">Profile</span>
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          <hr />
           <Dropdown
             as={NavItem}
-            className="card-black border border-secondary rounded-pill custom-hover"
+            className="card-black border border-secondary rounded-pill custom-hover mt-5"
           >
             <Dropdown.Toggle
               as={NavLink}
