@@ -24,6 +24,7 @@ RSpec.describe User, type: :model do
     it { is_expected.not_to allow_value('user@gmail,com').for(:email).with_message('must be a valid email format') }
     it { is_expected.not_to allow_value('user@.com').for(:email).with_message('must be a valid email format') }
     it { is_expected.not_to allow_value('user name@gmail.com').for(:email).with_message('must be a valid email format') }
+    it { is_expected.not_to allow_value('bob@bob').for(:email).with_message('must be a valid email format') }
 
     it { is_expected.to validate_presence_of(:password) }
     it { is_expected.to allow_value('!abc123').for(:password) }

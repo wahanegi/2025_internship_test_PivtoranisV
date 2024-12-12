@@ -16,8 +16,6 @@ const MainContent = () => {
     fetchTweets();
   }, []);
 
-  console.log(tweets);
-  console.log(authors);
   return (
     <Col className="border-end border-start border-secondary h-100">
       {tweets.map((tweet) => {

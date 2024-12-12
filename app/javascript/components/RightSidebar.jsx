@@ -1,10 +1,12 @@
 import React from 'react';
 import { Col } from 'react-bootstrap';
+import Suggestions from './Suggestions';
+import UserAuthentication from './UserAuthentication';
 
-const RightSideBar = () => {
+const RightSideBar = ({ user }) => {
   return (
     <Col xs={4} className="h-100">
-      Right Side Menu will be here
+      {user ? <Suggestions /> : <UserAuthentication />}
     </Col>
   );
 };
