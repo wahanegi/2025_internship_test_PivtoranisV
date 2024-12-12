@@ -23,7 +23,7 @@ const MainContent = ({ user }) => {
   };
 
   return (
-    <Col className="border-end border-start border-secondary h-100">
+    <Col className="border-end border-start border-secondary h-100 overflow-auto">
       <AddTweet user={user} addTweet={addTweet} />
       {tweets.map((tweet) => {
         const author = authors.find(

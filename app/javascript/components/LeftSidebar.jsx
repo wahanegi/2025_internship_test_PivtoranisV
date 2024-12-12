@@ -28,7 +28,7 @@ const LeftSidebar = ({ user }) => {
   };
 
   return (
-    <Col xs={3} className="h-100 my-5">
+    <Col xs={3} className="h-100 overflow-hidden my-2">
       {user ? (
         <>
           <Nav variant="tabs" className="flex-column mb-5">
