@@ -17,9 +17,14 @@ const MainContent = ({ user }) => {
     fetchTweets();
   }, []);
 
+  const addTweet = (newTweet) => {
+    const normalizedTweet = newTweet.data;
+    setTweets([normalizedTweet, ...tweets]);
+  };
+
   return (
-    <Col className="border-end border-start border-secondary h-100">
-      <AddTweet user={user} />
+    <Col className="border-end border-start border-secondary h-100 overflow-auto">
+      <AddTweet user={user} addTweet={addTweet} />
       {tweets.map((tweet) => {
         const author = authors.find(
           (author) => author.id === tweet.relationships.user.data.id

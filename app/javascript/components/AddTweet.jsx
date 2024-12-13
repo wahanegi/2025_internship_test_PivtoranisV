@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 
-const AddTweet = ({ user }) => {
+const AddTweet = ({ user, addTweet }) => {
   const [tweetData, setTweetData] = useState({ content: '' });
 
   const handleInputChange = (event) => {
@@ -27,6 +27,8 @@ const AddTweet = ({ user }) => {
       return;
     }
     const newTweet = await response.json();
+
+    addTweet(newTweet);
 
     setTweetData({ content: '' });
   };

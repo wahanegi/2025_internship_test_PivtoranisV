@@ -12,7 +12,7 @@ const UserAuthentication = () => {
         <div className="d-flex flex-column gap-3">
           <Button
             href="/users/sign_up"
-            variant="light"
+            variant="primary"
             className="rounded-pill"
           >
             Create Account

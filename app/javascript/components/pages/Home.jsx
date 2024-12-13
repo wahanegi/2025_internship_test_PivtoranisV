@@ -35,8 +35,8 @@ const Home = () => {
   }, []);
 
   return (
-    <Container fluid className="my-2">
-      <Row className="gap-2">
+    <Container fluid className="vh-100 my-2">
+      <Row className="h-100 gap-2">
         <LeftSidebar user={currentUser} />
         <MainContent user={currentUser} />
         <RightSidebar user={currentUser} />
