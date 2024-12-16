@@ -32,10 +32,9 @@ end
       user = create(:user)
       tweet = create(:tweet)
       create(:like, user: user, tweet: tweet)
-
       duplicate_like = build(:like, user: user, tweet: tweet)
       expect(duplicate_like).not_to be_valid
-      expect(duplicate_like.errors[:tweet_id]).to include('has already been taken')
+      expect(duplicate_like.errors[:user_id]).to include('has already been taken')
     end
   end
 end
