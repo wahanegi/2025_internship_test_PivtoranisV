@@ -10,7 +10,7 @@ const Home = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/v1/users', {
+        const response = await fetch('/api/v1/users', {
           headers: {
             Accept: 'application/json',
           },
