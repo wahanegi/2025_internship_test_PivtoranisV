@@ -5,7 +5,7 @@ import UserAuthentication from './UserAuthentication';
 
 const RightSidebar = ({ user }) => {
   return (
-    <Col xs={4} className="h-100">
+    <Col className="h-100 col-4">
       {user ? <Suggestions /> : <UserAuthentication />}
     </Col>
   );

@@ -37,7 +37,7 @@ const LeftSidebar = ({ user }) => {
   };
 
   return (
-    <Col xs={3} className="h-100 overflow-hidden my-2 ms-5">
+    <Col className="h-100 overflow-hidden my-2 ms-5 col-3">
       {user ? (
         <>
           <Navbar>
