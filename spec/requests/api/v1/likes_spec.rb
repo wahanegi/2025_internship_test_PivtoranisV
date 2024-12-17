@@ -107,10 +107,50 @@ RSpec.describe "Api::V1::Likes", type: :request do
     end
   end
 
-  describe "GET /destroy" do
-    it "returns http success" do
-      get "/api/v1/likes/destroy"
-      expect(response).to have_http_status(:success)
+  describe "DELETE /destroy" do
+    include Devise::Test::IntegrationHelpers
+
+    let!(:user) { create(:user) }
+    let!(:like) { create(:like) }
+    let(:headers) { { "Content-Type" => "application/json" } }
+    let(:json_response) { JSON.parse(response.body) }
+
+    before { sign_in user }
+
+    context "when the like exists" do
+      it "returns http status ok" do
+        delete "/api/v1/likes/#{like.id}", headers: headers
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "deletes the like" do
+        expect {
+          delete "/api/v1/likes/#{like.id}", headers: headers
+        }.to change(Like, :count).by(-1)
+      end
+    end
+
+    context "when the like does not exist" do
+      it "returns http status not found" do
+        delete "/api/v1/likes/0", headers: headers
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it "returns an error message" do
+        delete "/api/v1/likes/0", headers: headers
+        expect(json_response["error"]).to eq("Like not found")
+      end
+    end
+
+    context "when the like belongs to another user" do
+      let!(:other_user) { create(:user) }
+      let!(:other_like) { create(:like, user: other_user, tweet: tweet) }
+
+      it "does not delete the like" do
+        expect {
+          delete "/api/v1/likes/#{other_like.id}", headers: headers
+        }.not_to change(Like, :count)
+      end
     end
   end
 end
