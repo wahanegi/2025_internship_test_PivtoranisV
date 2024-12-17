@@ -51,6 +51,7 @@ const MainContent = ({ user }) => {
             author={authorName}
             date={tweet.attributes.created_at}
             likes={likeCount}
+            tweetId={tweet.id}
           />
         );
       })}
