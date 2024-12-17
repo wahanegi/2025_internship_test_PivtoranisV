@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :tweets, only: [ :index, :create ]
       resources :users, only: [ :index ]
-      resources :likes, only: [ :create, :destroy ]
+      resources :likes, only: [ :index, :create, :destroy ]
     end
   end
 
