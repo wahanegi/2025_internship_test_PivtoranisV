@@ -111,7 +111,7 @@ RSpec.describe "Api::V1::Likes", type: :request do
     include Devise::Test::IntegrationHelpers
 
     let!(:user) { create(:user) }
-    let!(:like) { create(:like) }
+    let!(:like) { create(:like, user: user) }
     let(:headers) { { "Content-Type" => "application/json" } }
     let(:json_response) { JSON.parse(response.body) }
 
@@ -144,12 +144,17 @@ RSpec.describe "Api::V1::Likes", type: :request do
 
     context "when the like belongs to another user" do
       let!(:other_user) { create(:user) }
-      let!(:other_like) { create(:like, user: other_user, tweet: tweet) }
+      let!(:other_like) { create(:like, user: other_user) }
 
       it "does not delete the like" do
         expect {
           delete "/api/v1/likes/#{other_like.id}", headers: headers
         }.not_to change(Like, :count)
+      end
+
+      it "returns http status unauthorized" do
+        delete "/api/v1/likes/#{other_like.id}", headers: headers
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end
