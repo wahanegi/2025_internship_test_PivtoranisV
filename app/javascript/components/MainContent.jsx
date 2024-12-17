@@ -29,6 +29,14 @@ const MainContent = ({ user }) => {
     setTweets([normalizedTweet, ...tweets]);
   };
 
+  const addLikes = (tweetId) => {
+    setLikes((prevLikes) => {
+      const currentLikes = prevLikes[tweetId] || 0;
+
+      return { ...prevLikes, [tweetId]: currentLikes + 1 };
+    });
+  };
+
   const getLikeCount = (tweetId) => {
     return likes[tweetId] || 0;
   };
@@ -52,6 +60,7 @@ const MainContent = ({ user }) => {
             date={tweet.attributes.created_at}
             likes={likeCount}
             tweetId={tweet.id}
+            addLikes={addLikes}
           />
         );
       })}

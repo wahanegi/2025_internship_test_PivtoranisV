@@ -2,7 +2,7 @@ import React from 'react';
 import { FaRegHeart } from 'react-icons/fa';
 import { FiMessageCircle } from 'react-icons/fi';
 
-const TweetActionLinks = ({ likes, tweetId }) => {
+const TweetActionLinks = ({ likes, tweetId, addLikes }) => {
   const handleClick = async () => {
     const csrfToken = document
       .querySelector('meta[name="csrf-token"]')
@@ -21,6 +21,7 @@ const TweetActionLinks = ({ likes, tweetId }) => {
       return;
     }
     const newLike = await response.json();
+    addLikes(newLike.tweet_id);
   };
   return (
     <div className="d-flex justify-content-evenly">

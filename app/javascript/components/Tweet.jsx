@@ -7,7 +7,7 @@ import {
 } from 'date-fns';
 import TweetActionLinks from './TweetActionLinks';
 
-const Tweet = ({ content, author, date, likes, tweetId }) => {
+const Tweet = ({ content, author, date, likes, tweetId, addLikes }) => {
   const parsedDate = parseISO(date);
   const daysDifference = differenceInDays(new Date(), parsedDate);
 
@@ -24,7 +24,7 @@ const Tweet = ({ content, author, date, likes, tweetId }) => {
         </p>
         <p className="mb-0 lh-lg">{content}</p>
       </div>
-      <TweetActionLinks likes={likes} tweetId={tweetId} />
+      <TweetActionLinks likes={likes} tweetId={tweetId} addLikes={addLikes} />
     </section>
   );
 };
