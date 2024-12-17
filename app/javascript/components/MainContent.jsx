@@ -52,7 +52,10 @@ const MainContent = ({ user }) => {
         const authorName = author?.attributes?.user_name;
         const likeCount = getLikeCount(tweet.id);
         const likedTweetIds = user?.attributes.liked_tweet_ids;
-        const isLiked = likedTweetIds.includes(Number(tweet.id));
+
+        const isLiked = likedTweetIds
+          ? likedTweetIds.includes(Number(tweet.id))
+          : false;
 
         return (
           <Tweet
