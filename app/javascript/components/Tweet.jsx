@@ -15,6 +15,8 @@ const Tweet = ({
   tweetId,
   addLikes,
   isLiked,
+  likeId,
+  removeLikes,
 }) => {
   const parsedDate = parseISO(date);
   const daysDifference = differenceInDays(new Date(), parsedDate);
@@ -37,6 +39,8 @@ const Tweet = ({
         tweetId={tweetId}
         addLikes={addLikes}
         isLiked={isLiked}
+        likeId={likeId}
+        removeLikes={removeLikes}
       />
     </section>
   );

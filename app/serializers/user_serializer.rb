@@ -4,7 +4,7 @@ class UserSerializer
   has_many :tweets
   has_many :likes
 
-  attribute :liked_tweet_ids do |user|
-    user.likes.map(&:tweet_id)
+  attribute :liked_tweets_with_ids do |user|
+    user.likes.map { |like| { tweet_id: like.tweet_id, like_id: like.id } }
   end
 end

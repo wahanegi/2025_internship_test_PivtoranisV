@@ -37,6 +37,14 @@ const MainContent = ({ user }) => {
     });
   };
 
+  const removeLikes = (tweetId) => {
+    setLikes((prevLikes) => {
+      const currentLikes = prevLikes[tweetId] || 0;
+
+      return { ...prevLikes, [tweetId]: currentLikes - 1 };
+    });
+  };
+
   const getLikeCount = (tweetId) => {
     return likes[tweetId] || 0;
   };
@@ -51,11 +59,11 @@ const MainContent = ({ user }) => {
 
         const authorName = author?.attributes?.user_name;
         const likeCount = getLikeCount(tweet.id);
-        const likedTweetIds = user?.attributes.liked_tweet_ids;
-
-        const isLiked = likedTweetIds
-          ? likedTweetIds.includes(Number(tweet.id))
-          : false;
+        const likedTweets = user?.attributes?.liked_tweets_with_ids || [];
+        const likedTweet = likedTweets.find(
+          (likedTweet) => likedTweet.tweet_id === Number(tweet.id)
+        );
+        const likeId = likedTweet ? likedTweet.like_id : null;
 
         return (
           <Tweet
@@ -66,7 +74,9 @@ const MainContent = ({ user }) => {
             likes={likeCount}
             tweetId={tweet.id}
             addLikes={addLikes}
-            isLiked={isLiked}
+            isLiked={likeId !== null}
+            likeId={likeId}
+            removeLikes={removeLikes}
           />
         );
       })}

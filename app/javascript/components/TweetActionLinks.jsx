@@ -2,8 +2,16 @@ import React, { useState } from 'react';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import { FiMessageCircle } from 'react-icons/fi';
 
-const TweetActionLinks = ({ likes, tweetId, addLikes, isLiked }) => {
+const TweetActionLinks = ({
+  likes,
+  tweetId,
+  addLikes,
+  isLiked,
+  likeId,
+  removeLikes,
+}) => {
   const [tweetLiked, setTweetLiked] = useState(isLiked);
+
   const handleLikeClick = async () => {
     const csrfToken = document
       .querySelector('meta[name="csrf-token"]')
@@ -25,7 +33,22 @@ const TweetActionLinks = ({ likes, tweetId, addLikes, isLiked }) => {
     addLikes(newLike.tweet_id);
     setTweetLiked(true);
   };
-  const handleUnlikeClick = async () => {};
+
+  const handleUnlikeClick = async () => {
+    const csrfToken = document
+      .querySelector('meta[name="csrf-token"]')
+      .getAttribute('content');
+
+    const response = await fetch(`/api/v1/likes/${likeId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken,
+      },
+    });
+    setTweetLiked(false);
+    removeLikes(tweetId);
+  };
   return (
     <div className="d-flex justify-content-evenly">
       <div className="d-flex align-items-center gap-1 action-links-hover p-1 rounded">
