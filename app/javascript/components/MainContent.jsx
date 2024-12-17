@@ -9,7 +9,7 @@ const MainContent = ({ user }) => {
 
   useEffect(() => {
     const fetchTweets = async () => {
-      const response = await fetch('http://localhost:3000/api/v1/tweets');
+      const response = await fetch(`/api/v1/tweets`);
       const tweetData = await response.json();
       setTweets(tweetData.data);
       setAuthors(tweetData.included);

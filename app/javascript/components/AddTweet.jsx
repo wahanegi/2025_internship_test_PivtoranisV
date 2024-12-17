@@ -13,7 +13,7 @@ const AddTweet = ({ user, addTweet }) => {
     const csrfToken = document
       .querySelector('meta[name="csrf-token"]')
       .getAttribute('content');
-    const response = await fetch('http://localhost:3000/api/v1/tweets', {
+    const response = await fetch('/api/v1/tweets', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

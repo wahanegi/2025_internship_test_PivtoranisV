@@ -7,6 +7,7 @@ gem "rails", "~> 8.0.0"
 gem "bootsnap", require: false
 gem "cssbundling-rails"
 gem "devise", "~> 4.9"
+gem "faker"
 gem "jsbundling-rails"
 gem "jbuilder"
 gem "jsonapi-serializer"
@@ -28,7 +29,6 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
   gem "rspec-rails"
   gem "factory_bot_rails"
-  gem "faker"
   gem "shoulda-matchers"
   gem "dotenv"
 end
