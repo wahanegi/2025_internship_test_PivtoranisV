@@ -5,6 +5,7 @@ import {
   differenceInDays,
   format,
 } from 'date-fns';
+import TweetActionLinks from './TweetActionLinks';
 
 const Tweet = ({ content, author, date }) => {
   const parsedDate = parseISO(date);
@@ -23,6 +24,7 @@ const Tweet = ({ content, author, date }) => {
         </p>
         <p className="mb-0 lh-lg">{content}</p>
       </div>
+      <TweetActionLinks />
     </section>
   );
 };
