@@ -80,7 +80,7 @@ RSpec.describe "Api::V1::Likes", type: :request do
       end
 
       it "returns error messages in the response" do
-        expect(json_response['errors']).to include("tweet_id can't be blank")
+        expect(json_response['errors']).to include("Tweet can't be blank")
       end
     end
 
