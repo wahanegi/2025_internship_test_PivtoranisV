@@ -2,7 +2,7 @@ import React from 'react';
 import { FaRegHeart } from 'react-icons/fa';
 import { FiMessageCircle } from 'react-icons/fi';
 
-const TweetActionLinks = () => {
+const TweetActionLinks = ({ likes }) => {
   return (
     <div className="d-flex justify-content-evenly">
       <div className="d-flex align-items-center gap-1 action-links-hover p-1 rounded">
@@ -10,7 +10,7 @@ const TweetActionLinks = () => {
           type="button"
           className="btn d-flex align-items-center gap-1 action-links-hover "
         >
-          <FaRegHeart /> <span>125</span>
+          <FaRegHeart /> <span>{likes}</span>
         </button>
       </div>
       <button

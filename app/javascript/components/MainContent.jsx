@@ -6,6 +6,7 @@ import AddTweet from './AddTweet';
 const MainContent = ({ user }) => {
   const [tweets, setTweets] = useState([]);
   const [authors, setAuthors] = useState([]);
+  const [likes, setLikes] = useState({});
 
   useEffect(() => {
     const fetchTweets = async () => {
@@ -14,12 +15,22 @@ const MainContent = ({ user }) => {
       setTweets(tweetData.data);
       setAuthors(tweetData.included);
     };
+    const fetchLikes = async () => {
+      const response = await fetch(`/api/v1/likes`);
+      const likesData = await response.json();
+      setLikes(likesData);
+    };
     fetchTweets();
+    fetchLikes();
   }, []);
 
   const addTweet = (newTweet) => {
     const normalizedTweet = newTweet.data;
     setTweets([normalizedTweet, ...tweets]);
+  };
+
+  const getLikeCount = (tweetId) => {
+    return likes[tweetId] || 0;
   };
 
   return (
@@ -31,6 +42,7 @@ const MainContent = ({ user }) => {
         );
 
         const authorName = author?.attributes?.user_name;
+        const likeCount = getLikeCount(tweet.id);
 
         return (
           <Tweet
@@ -38,6 +50,7 @@ const MainContent = ({ user }) => {
             content={tweet.attributes.content}
             author={authorName}
             date={tweet.attributes.created_at}
+            likes={likeCount}
           />
         );
       })}
