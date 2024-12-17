@@ -40,10 +40,70 @@ RSpec.describe "Api::V1::Likes", type: :request do
       end
     end
   end
-  describe "GET /create" do
-    it "returns http success" do
-      get "/api/v1/likes/create"
-      expect(response).to have_http_status(:success)
+
+  describe "POST /create" do
+    include Devise::Test::IntegrationHelpers
+
+    let!(:user) { create(:user) }
+    let!(:tweet) { create(:tweet) }
+    let(:valid_attributes) { { tweet_id: tweet.id } }
+    let(:invalid_attributes) { { tweet_id: "" } }
+    let(:headers) { { "Content-Type" => "application/json" } }
+    let(:json_response) { JSON.parse(response.body) }
+
+    before { sign_in user }
+
+    context "when the request is valid" do
+      it "returns http status created" do
+        post "/api/v1/likes", params: valid_attributes.to_json, headers: headers
+        expect(response).to have_http_status(:created)
+      end
+
+      it "creates a new like" do
+        expect {
+          post "/api/v1/likes", params: valid_attributes.to_json, headers: headers
+        }.to change(Like, :count).by(1)
+      end
+    end
+
+    context "when the request is invalid" do
+      before { post "/api/v1/likes", params: invalid_attributes.to_json, headers: headers }
+
+      it "does not create a new like" do
+        expect {
+          post "/api/v1/likes", params: invalid_attributes.to_json, headers: headers
+        }.not_to change(Like, :count)
+      end
+
+      it "returns http status unprocessable entity" do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "returns error messages in the response" do
+        expect(json_response['errors']).to include("tweet_id can't be blank")
+      end
+    end
+
+    context "when the user tries to like the same tweet twice" do
+      before do
+        create(:like, user: user, tweet: tweet)
+      end
+
+      it "does not create a duplicate like" do
+        expect {
+          post "/api/v1/likes", params: valid_attributes.to_json, headers: headers
+        }.not_to change(Like, :count)
+      end
+
+      it "returns http status unprocessable entity" do
+        post "/api/v1/likes", params: valid_attributes.to_json, headers: headers
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "returns a validation error message" do
+        post "/api/v1/likes", params: valid_attributes.to_json, headers: headers
+        expect(json_response['errors']).to include("User has already been taken")
+      end
     end
   end
 
