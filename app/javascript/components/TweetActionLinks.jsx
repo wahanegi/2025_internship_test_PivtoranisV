@@ -1,9 +1,9 @@
 import React from 'react';
-import { FaRegHeart } from 'react-icons/fa';
+import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import { FiMessageCircle } from 'react-icons/fi';
 
-const TweetActionLinks = ({ likes, tweetId, addLikes }) => {
-  const handleClick = async () => {
+const TweetActionLinks = ({ likes, tweetId, addLikes, isLiked }) => {
+  const handleLikeClick = async () => {
     const csrfToken = document
       .querySelector('meta[name="csrf-token"]')
       .getAttribute('content');
@@ -23,16 +23,27 @@ const TweetActionLinks = ({ likes, tweetId, addLikes }) => {
     const newLike = await response.json();
     addLikes(newLike.tweet_id);
   };
+  const handleUnlikeClick = async () => {};
   return (
     <div className="d-flex justify-content-evenly">
       <div className="d-flex align-items-center gap-1 action-links-hover p-1 rounded">
-        <button
-          onClick={handleClick}
-          type="button"
-          className="btn d-flex align-items-center gap-1 action-links-hover "
-        >
-          <FaRegHeart /> <span>{likes}</span>
-        </button>
+        {isLiked ? (
+          <button
+            onClick={handleUnlikeClick}
+            type="button"
+            className="btn d-flex align-items-center gap-1 action-links-hover "
+          >
+            <FaHeart /> <span>{likes}</span>
+          </button>
+        ) : (
+          <button
+            onClick={handleLikeClick}
+            type="button"
+            className="btn d-flex align-items-center gap-1 action-links-hover "
+          >
+            <FaRegHeart /> <span>{likes}</span>
+          </button>
+        )}
       </div>
       <button
         type="button"
