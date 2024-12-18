@@ -8,11 +8,9 @@ class Api::V1::TweetsController < ApplicationController
   end
 
   def show
-    if @tweet
-      render json: TweetSerializer.new(@tweet, include: [ :user ]).serializable_hash
-    else
-      render json: { error: "Tweet not found" }, status: :not_found
-    end
+    return render json: { error: "Tweet not found" }, status: :not_found unless @tweet
+
+    render json: TweetSerializer.new(@tweet, include: [ :user ]).serializable_hash
   end
 
   def create
@@ -26,9 +24,9 @@ class Api::V1::TweetsController < ApplicationController
   end
 
   def update
-    if current_user != @tweet.user
-      render json: { error: "You are not authorized to edit this tweet." }, status: :unauthorized
-    elsif @tweet.update(tweets_params)
+    return render json: { error: "You are not authorized to edit this tweet." }, status: :unauthorized unless authorized_user?
+
+    if @tweet.update(tweets_params)
      render json: TweetSerializer.new(@tweet).serializable_hash
     else
       render json: { errors: @tweet.errors.full_messages }, status: :unprocessable_entity
@@ -36,12 +34,10 @@ class Api::V1::TweetsController < ApplicationController
   end
 
   def destroy
-    if current_user != @tweet.user
-      render json: { error: "You are not authorized to delete this tweet." }, status: :unauthorized
-    else
-      @tweet.destroy
-      render json: { message: "Tweet deleted successfully." }, status: :ok
-    end
+    return render json: { error: "You are not authorized to delete this tweet." }, status: :unauthorized unless authorized_user?
+
+    @tweet.destroy
+    render json: { message: "Tweet deleted successfully." }, status: :ok
   end
 
 
@@ -53,5 +49,9 @@ class Api::V1::TweetsController < ApplicationController
 
   def set_tweet
     @tweet = Tweet.find_by(id: params[:id])
+  end
+
+  def authorized_user?
+    current_user.id == @tweet.user_id
   end
 end
