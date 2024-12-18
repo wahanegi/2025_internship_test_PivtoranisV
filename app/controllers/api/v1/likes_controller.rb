@@ -18,14 +18,11 @@ class Api::V1::LikesController < ApplicationController
   def destroy
     like = Like.find_by(id: params[:id])
 
-    if like.nil?
-      render json: { error: "Like not found" }, status: :not_found
-    elsif current_user != like.user
-      render json: { error: "You are not authorized to unlike this tweet." }, status: :unauthorized
-    else
-      like.destroy
-      render json: { message: "Tweet unliked successfully." }, status: :ok
-    end
+    return render json: { error: "Like not found" }, status: :not_found if like.nil?
+    return render json: { error: "You are not authorized to unlike this tweet." }, status: :unauthorized if current_user != like.user
+
+    like.destroy
+    render json: { message: "Tweet unliked successfully." }, status: :ok
   end
 
   private
