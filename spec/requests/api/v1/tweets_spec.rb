@@ -213,4 +213,56 @@ RSpec.describe "Api::V1::Tweets", type: :request do
       end
     end
   end
+
+  describe "DELETE destroy/:id" do
+    include Devise::Test::IntegrationHelpers
+    let!(:user) { create(:user) }
+    let!(:other_user) { create(:user) }
+    let!(:tweet) { create(:tweet, user: user) }
+    let(:headers) { { "Content-Type" => "application/json" } }
+    let(:json_response) { JSON.parse(response.body) }
+
+    before { sign_in user }
+
+    context "when the request is valid" do
+      it "returns http status success" do
+        delete "/api/v1/tweets/#{tweet.id}", headers: headers
+        expect(response).to have_http_status(:success)
+      end
+
+      it "deletes the tweet" do
+        expect {
+          delete "/api/v1/tweets/#{tweet.id}", headers: headers
+        }.to change(Tweet, :count).by(-1)
+      end
+
+      it "returns a success message" do
+        delete "/api/v1/tweets/#{tweet.id}", headers: headers
+        expect(json_response['message']).to eq("Tweet deleted successfully.")
+      end
+    end
+
+    context "when the user is unauthorized" do
+      before do
+        sign_out user
+        sign_in other_user
+      end
+
+      it "does not delete the tweet" do
+        expect {
+          delete "/api/v1/tweets/#{tweet.id}", headers: headers
+        }.not_to change(Tweet, :count)
+      end
+
+      it "returns http status unauthorized" do
+        delete "/api/v1/tweets/#{tweet.id}", headers: headers
+        expect(response).to have_http_status(:unauthorized)
+      end
+
+      it "returns an error message" do
+        delete "/api/v1/tweets/#{tweet.id}", headers: headers
+        expect(json_response['error']).to eq("You are not authorized to delete this tweet.")
+      end
+    end
+  end
 end

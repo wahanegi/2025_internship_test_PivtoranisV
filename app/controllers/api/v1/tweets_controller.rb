@@ -1,6 +1,6 @@
 class Api::V1::TweetsController < ApplicationController
-  before_action :authenticate_user!, only: [ :create, :update ]
-  before_action :set_tweet, only: [ :show, :update ]
+  before_action :authenticate_user!, only: [ :create, :update, :destroy ]
+  before_action :set_tweet, only: [ :show, :update, :destroy ]
 
   def index
     tweets = Tweet.recent.includes(:user)
@@ -32,6 +32,15 @@ class Api::V1::TweetsController < ApplicationController
      render json: TweetSerializer.new(@tweet).serializable_hash
     else
       render json: { errors: @tweet.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    if current_user != @tweet.user
+      render json: { error: "You are not authorized to delete this tweet." }, status: :unauthorized
+    else
+      @tweet.destroy
+      render json: { message: "Tweet deleted successfully." }, status: :ok
     end
   end
 
