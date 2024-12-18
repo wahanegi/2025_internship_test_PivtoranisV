@@ -49,6 +49,49 @@ RSpec.describe "Api::V1::Tweets", type: :request do
     end
   end
 
+  describe "GET show/:id" do
+    let!(:user) { create(:user) }
+    let!(:tweet) { create(:tweet) }
+    let(:json_response) { JSON.parse(response.body) }
+
+    before { get "/api/v1/tweets/#{tweet.id}" }
+
+    it "returns http success" do
+      expect(response).to have_http_status(:success)
+    end
+
+    it "returns JSON format" do
+      expect(response.content_type).to eq("application/json; charset=utf-8")
+    end
+
+    it "returns just one tweet" do
+      expect(json_response['data']).not_to be_nil
+      expect(json_response['data']['id']).to eq(tweet.id.to_s)
+    end
+
+    it "returns the correct tweet content" do
+      expect(json_response['data']['attributes']['content']).to eq(tweet.content)
+    end
+
+    it "responds in JSON:API format" do
+      expect(json_response).to have_key('data')
+      expect(json_response['data']).to have_key('attributes')
+      expect(json_response['data']).to have_key('relationships')
+      expect(json_response['data']['relationships']).to have_key('user')
+    end
+    context "when the tweet does not exist" do
+      before { get "/api/v1/tweets/not_existing_id" }
+
+      it "returns http not found" do
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it "returns an error message" do
+        expect(json_response['error']).to eq('Tweet not found')
+      end
+    end
+  end
+
   describe "POST /create" do
     include Devise::Test::IntegrationHelpers
     let!(:user) { create(:user) }
