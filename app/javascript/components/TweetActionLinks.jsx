@@ -51,6 +51,28 @@ const TweetActionLinks = ({
     setTweetLiked(false);
     removeLikes(tweetId);
   };
+
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete this tweet?')) return;
+    const csrfToken = getCSRFToken();
+
+    const response = await fetch(`/api/v1/tweets/${tweetId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken,
+      },
+    });
+
+    if (response.ok) {
+      window.location.href = '/';
+    } else if (response.status === 401) {
+      alert('You are not authorized to delete this tweet.');
+    } else {
+      alert('Failed to delete the tweet. Please try again.');
+    }
+  };
+
   return (
     <div className="d-flex justify-content-between">
       <div className="d-flex align-items-center gap-1 action-links-hover p-1 rounded">
@@ -91,6 +113,7 @@ const TweetActionLinks = ({
             <button
               type="button"
               className="btn d-flex align-items-center gap-1 action-links-hover"
+              onClick={handleDelete}
             >
               <MdDelete />
             </button>
