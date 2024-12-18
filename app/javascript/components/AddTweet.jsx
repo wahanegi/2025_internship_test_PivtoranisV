@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { getCSRFToken } from '../utils';
 
 const AddTweet = ({ user, addTweet }) => {
   const [tweetData, setTweetData] = useState({ content: '' });
@@ -10,9 +11,7 @@ const AddTweet = ({ user, addTweet }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const csrfToken = document
-      .querySelector('meta[name="csrf-token"]')
-      .getAttribute('content');
+    const csrfToken = getCSRFToken();
     const response = await fetch('/api/v1/tweets', {
       method: 'POST',
       headers: {

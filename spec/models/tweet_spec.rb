@@ -9,6 +9,7 @@ RSpec.describe Tweet, type: :model do
 
   context 'Associations' do
     it { is_expected.to belong_to(:user) }
+    it { is_expected.to have_many(:likes).dependent(:destroy) }
   end
 
   context 'Validation' do

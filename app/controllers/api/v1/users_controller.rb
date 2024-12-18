@@ -3,7 +3,8 @@ class Api::V1::UsersController < ApplicationController
 
   def index
     if current_user
-      render json: UserSerializer.new(current_user).serializable_hash
+      user = User.includes(:likes).find(current_user.id)
+      render json: UserSerializer.new(user).serializable_hash
     else
       render json: { error: "Not signed in" }, status: :unauthorized
     end

@@ -16,7 +16,6 @@ body {
 }
 
 .custom-hover:hover {
-  background-color: #414141;
   cursor: pointer;
 }
 
@@ -40,4 +39,14 @@ body {
 .search:focus {
   outline: none;
   box-shadow: none;
+}
+
+.action-links-hover {
+  transition: background-color 0.2s ease;
+  color: $secondary;
+}
+
+.action-links-hover:hover {
+  color: rgb(249, 24, 128);
+  cursor: pointer;
 }

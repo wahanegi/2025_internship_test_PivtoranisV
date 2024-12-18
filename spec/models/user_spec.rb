@@ -12,6 +12,7 @@ RSpec.describe User, type: :model do
     let!(:tweet2) { create(:tweet, user: user) }
 
     it { is_expected.to have_many(:tweets) }
+    it { is_expected.to have_many(:likes).dependent(:destroy) }
 
     it 'destroys associated tweets when a user is destroyed' do
     expect { user.destroy }.to change(Tweet, :count).by(-2)
