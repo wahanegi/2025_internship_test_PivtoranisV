@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   protect_from_forgery with: :exception
 
-  def authenticate_user!
+  def authenticate_user!(*args)
     if user_signed_in?
       super
     else
@@ -18,5 +18,6 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [ :user_name ])
+    devise_parameter_sanitizer.permit(:account_update, keys: [ :user_name ])
   end
 end

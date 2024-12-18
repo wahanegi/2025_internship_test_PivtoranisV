@@ -54,17 +54,17 @@ const LeftSidebar = ({ user }) => {
               </Navbar.Brand>
             </Container>
           </Navbar>
-          <Navbar className="w-75 custom-hover">
+          <Navbar>
             <Container>
-              <Navbar.Brand href="/">
+              <Navbar.Brand>
                 <FaSearch className="text-primary h2 rounded" />
                 <span className="ms-4 text-light h4">Explore</span>
               </Navbar.Brand>
             </Container>
           </Navbar>
-          <Navbar className="custom-hover">
+          <Navbar>
             <Container>
-              <Navbar.Brand href="/">
+              <Navbar.Brand>
                 <FaRegBell className="text-primary h2 rounded" />
                 <span className="ms-4 text-light h4">Notifications</span>
               </Navbar.Brand>
@@ -72,7 +72,7 @@ const LeftSidebar = ({ user }) => {
           </Navbar>
           <Navbar className="w-75 custom-hover">
             <Container>
-              <Navbar.Brand href="/">
+              <Navbar.Brand href="/users/edit">
                 <FaUser className="text-primary h2 rounded" />
                 <span className="ms-4 text-light h4">Profile</span>
               </Navbar.Brand>
