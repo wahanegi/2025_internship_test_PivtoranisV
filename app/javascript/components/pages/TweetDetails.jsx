@@ -93,6 +93,8 @@ const TweetDetails = () => {
               isLiked={likeId !== null}
               likeId={likeId}
               sentFromDetails={true}
+              currentUser={currentUser}
+              authorId={author.id}
             />
           )}
         </Col>

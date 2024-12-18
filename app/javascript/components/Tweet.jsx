@@ -19,6 +19,8 @@ const Tweet = ({
   likeId,
   removeLikes,
   sentFromDetails = false,
+  currentUser,
+  authorId,
 }) => {
   const navigate = useNavigate();
 
@@ -61,6 +63,8 @@ const Tweet = ({
           likeId={likeId}
           removeLikes={removeLikes}
           sentFromDetails={sentFromDetails}
+          currentUser={currentUser}
+          authorId={authorId}
         />
       </div>
     </section>
