@@ -50,7 +50,7 @@ const TweetActionLinks = ({
     removeLikes(tweetId);
   };
   return (
-    <div className="d-flex justify-content-evenly">
+    <div className="d-flex justify-content-start">
       <div className="d-flex align-items-center gap-1 action-links-hover p-1 rounded">
         {tweetLiked ? (
           <button
