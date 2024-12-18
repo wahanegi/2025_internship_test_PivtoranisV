@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import { FiMessageCircle } from 'react-icons/fi';
+import { getCSRFToken } from '../utils';
 
 const TweetActionLinks = ({
   likes,
@@ -13,9 +14,8 @@ const TweetActionLinks = ({
   const [tweetLiked, setTweetLiked] = useState(isLiked);
 
   const handleLikeClick = async () => {
-    const csrfToken = document
-      .querySelector('meta[name="csrf-token"]')
-      .getAttribute('content');
+    const csrfToken = getCSRFToken();
+
     const response = await fetch('/api/v1/likes', {
       method: 'POST',
       headers: {
@@ -35,9 +35,7 @@ const TweetActionLinks = ({
   };
 
   const handleUnlikeClick = async () => {
-    const csrfToken = document
-      .querySelector('meta[name="csrf-token"]')
-      .getAttribute('content');
+    const csrfToken = getCSRFToken();
 
     const response = await fetch(`/api/v1/likes/${likeId}`, {
       method: 'DELETE',

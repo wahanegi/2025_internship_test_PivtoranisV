@@ -9,13 +9,12 @@ import {
   NavLink,
 } from 'react-bootstrap';
 import { FaTwitter, FaHome, FaSearch, FaRegBell, FaUser } from 'react-icons/fa';
+import { getCSRFToken } from '../utils';
 
 const LeftSidebar = ({ user }) => {
   const handleLogout = async () => {
     try {
-      const csrfToken = document.querySelector(
-        'meta[name="csrf-token"]'
-      ).content;
+      const csrfToken = getCSRFToken();
 
       const response = await fetch('/users/sign_out', {
         method: 'DELETE',
