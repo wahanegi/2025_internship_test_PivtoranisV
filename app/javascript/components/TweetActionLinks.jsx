@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { FaRegHeart, FaHeart } from 'react-icons/fa';
+import { FaRegHeart, FaHeart, FaEdit } from 'react-icons/fa';
 import { FiMessageCircle } from 'react-icons/fi';
+import { MdDelete } from 'react-icons/md';
 import { getCSRFToken } from '../utils';
 
 const TweetActionLinks = ({
@@ -10,6 +11,7 @@ const TweetActionLinks = ({
   isLiked,
   likeId,
   removeLikes,
+  sentFromDetails,
 }) => {
   const [tweetLiked, setTweetLiked] = useState(isLiked);
 
@@ -48,7 +50,7 @@ const TweetActionLinks = ({
     removeLikes(tweetId);
   };
   return (
-    <div className="d-flex justify-content-start">
+    <div className="d-flex justify-content-between">
       <div className="d-flex align-items-center gap-1 action-links-hover p-1 rounded">
         {tweetLiked ? (
           <button
@@ -67,13 +69,32 @@ const TweetActionLinks = ({
             <FaRegHeart /> <span>{likes}</span>
           </button>
         )}
+
+        <button
+          type="button"
+          className="btn d-flex align-items-center gap-1 action-links-hover"
+        >
+          <FiMessageCircle /> <span>15</span>
+        </button>
       </div>
-      <button
-        type="button"
-        className="btn d-flex align-items-center gap-1 action-links-hover"
-      >
-        <FiMessageCircle /> <span>15</span>
-      </button>
+      <div className="d-flex align-items-center gap-1 action-links-hover p-1 rounded">
+        {sentFromDetails && (
+          <>
+            <button
+              type="button"
+              className="btn d-flex align-items-center gap-1 action-links-hover"
+            >
+              <FaEdit />
+            </button>
+            <button
+              type="button"
+              className="btn d-flex align-items-center gap-1 action-links-hover"
+            >
+              <MdDelete />
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 };

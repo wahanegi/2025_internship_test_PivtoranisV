@@ -92,7 +92,7 @@ const TweetDetails = () => {
               removeLikes={removeLikes}
               isLiked={likeId !== null}
               likeId={likeId}
-              disableNavigate={true}
+              sentFromDetails={true}
             />
           )}
         </Col>
