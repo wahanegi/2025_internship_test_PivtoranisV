@@ -15,6 +15,7 @@ const TweetActionLinks = ({
   sentFromDetails,
   currentUser,
   authorId,
+  content,
 }) => {
   const [tweetLiked, setTweetLiked] = useState(isLiked);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -126,6 +127,7 @@ const TweetActionLinks = ({
       <EditTweet
         show={showEditModal}
         handleClose={() => setShowEditModal(false)}
+        content={content}
       />
     </div>
   );

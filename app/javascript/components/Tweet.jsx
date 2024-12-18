@@ -65,6 +65,7 @@ const Tweet = ({
           sentFromDetails={sentFromDetails}
           currentUser={currentUser}
           authorId={authorId}
+          content={content}
         />
       </div>
     </section>
