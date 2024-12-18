@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaRegHeart, FaHeart, FaEdit } from 'react-icons/fa';
 import { FiMessageCircle } from 'react-icons/fi';
 import { MdDelete } from 'react-icons/md';
+import EditTweet from './EditTweet';
 import { getCSRFToken } from '../utils';
 
 const TweetActionLinks = ({
@@ -16,6 +17,7 @@ const TweetActionLinks = ({
   authorId,
 }) => {
   const [tweetLiked, setTweetLiked] = useState(isLiked);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const handleLikeClick = async () => {
     const csrfToken = getCSRFToken();
@@ -107,6 +109,7 @@ const TweetActionLinks = ({
             <button
               type="button"
               className="btn d-flex align-items-center gap-1 action-links-hover"
+              onClick={() => setShowEditModal(true)}
             >
               <FaEdit />
             </button>
@@ -120,6 +123,10 @@ const TweetActionLinks = ({
           </>
         )}
       </div>
+      <EditTweet
+        show={showEditModal}
+        handleClose={() => setShowEditModal(false)}
+      />
     </div>
   );
 };
