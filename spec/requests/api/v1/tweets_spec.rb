@@ -146,4 +146,71 @@ RSpec.describe "Api::V1::Tweets", type: :request do
       end
     end
   end
+
+  describe "PATCH update/:id" do
+    include Devise::Test::IntegrationHelpers
+    let!(:user) { create(:user) }
+    let!(:other_user) { create(:user) }
+    let!(:tweet) { create(:tweet, user: user, content: "Original content") }
+    let(:valid_attributes) { { content: "Updated content" } }
+    let(:invalid_attributes) { { content: "" } }
+    let(:headers) { { "Content-Type" => "application/json" } }
+    let(:json_response) { JSON.parse(response.body) }
+
+    before { sign_in user }
+
+    context "when the request is valid" do
+      before { patch "/api/v1/tweets/#{tweet.id}", params: valid_attributes.to_json, headers: headers }
+
+      it "returns http status success" do
+        expect(response).to have_http_status(:success)
+      end
+
+      it "updates the tweet content" do
+        expect(tweet.reload.content).to eq(valid_attributes[:content])
+      end
+
+      it "returns the updated tweet in JSON:API format" do
+        expect(json_response).to have_key('data')
+        expect(json_response['data']).to have_key('attributes')
+        expect(json_response['data']['attributes']['content']).to eq(valid_attributes[:content])
+      end
+    end
+
+    context "when the request is invalid" do
+      before { patch "/api/v1/tweets/#{tweet.id}", params: invalid_attributes.to_json, headers: headers }
+
+      it "does not update the tweet content" do
+        expect(tweet.reload.content).to eq("Original content")
+      end
+
+      it "returns http status unprocessable entity" do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "returns error messages in the response" do
+        expect(json_response['errors']).to include("Content can't be blank")
+      end
+    end
+
+    context "when the user is unauthorized" do
+      before do
+        sign_out user
+        sign_in other_user
+        patch "/api/v1/tweets/#{tweet.id}", params: valid_attributes.to_json, headers: headers
+      end
+
+      it "does not update the tweet" do
+        expect(tweet.reload.content).to eq("Original content")
+      end
+
+      it "returns http status unauthorized" do
+        expect(response).to have_http_status(:unauthorized)
+      end
+
+      it "returns an error message" do
+        expect(json_response['error']).to eq("You are not authorized to edit this tweet.")
+      end
+    end
+  end
 end
