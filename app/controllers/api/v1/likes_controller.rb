@@ -19,7 +19,7 @@ class Api::V1::LikesController < ApplicationController
     like = Like.find_by(id: params[:id])
 
     return render json: { error: "Like not found" }, status: :not_found if like.nil?
-    return render json: { error: "You are not authorized to unlike this tweet." }, status: :unauthorized if current_user != like.user
+    return render json: { error: "You are not authorized to unlike this tweet." }, status: :unauthorized if current_user.id != like.user_id
 
     like.destroy
     render json: { message: "Tweet unliked successfully." }, status: :ok
