@@ -18,6 +18,7 @@ const Tweet = ({
   isLiked,
   likeId,
   removeLikes,
+  disableNavigate = false,
 }) => {
   const navigate = useNavigate();
 
@@ -30,12 +31,16 @@ const Tweet = ({
       : format(parsedDate, 'MMM dd, yy');
 
   const handleNavigate = () => {
-    navigate(`/tweets/${tweetId}`);
+    if (!disableNavigate) {
+      navigate(`/tweets/${tweetId}`);
+    }
   };
 
   return (
     <section
-      className="custom-hover border border-secondary py-3 px-3 card-black my-3"
+      className={`border border-secondary py-3 px-3 card-black my-3 ${
+        disableNavigate ? '' : 'custom-hover'
+      }`}
       onClick={handleNavigate}
     >
       <div>
