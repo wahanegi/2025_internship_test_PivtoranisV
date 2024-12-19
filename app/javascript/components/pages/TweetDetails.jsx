@@ -4,6 +4,7 @@ import LeftSidebar from '../LeftSidebar';
 import { Col, Container, Row } from 'react-bootstrap';
 import Tweet from '../Tweet';
 import Comments from '../Comments';
+import AddComment from '../AddComment';
 
 const TweetDetails = () => {
   const { id } = useParams();
@@ -120,8 +121,8 @@ const TweetDetails = () => {
                 authorId={author.id}
               />
               <Row>
-                <Col className="d-flex justify-content-center">
-                  <p>Post your reply</p>
+                <Col className="d-flex flex-column align-items-center">
+                  <AddComment />
                 </Col>
               </Row>
               <Row>
