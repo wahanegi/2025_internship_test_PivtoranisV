@@ -209,7 +209,7 @@ RSpec.describe "Api::V1::Tweets", type: :request do
       end
 
       it "returns an error message" do
-        expect(json_response['error']).to eq("You are not authorized to edit this tweet.")
+        expect(json_response['error']).to eq("You are not authorized to perform this action.")
       end
     end
   end
@@ -261,7 +261,7 @@ RSpec.describe "Api::V1::Tweets", type: :request do
 
       it "returns an error message" do
         delete "/api/v1/tweets/#{tweet.id}", headers: headers
-        expect(json_response['error']).to eq("You are not authorized to delete this tweet.")
+        expect(json_response['error']).to eq("You are not authorized to perform this action.")
       end
     end
   end
