@@ -1,16 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { getCSRFToken } from '../utils';
 
-const AddComment = () => {
+const AddComment = ({ tweetId, onCommentAdded }) => {
+  const [commentData, setCommentData] = useState({ body: '' });
+
+  const handleInputChange = (event) => {
+    setCommentData({ ...commentData, body: event.target.value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const csrfToken = getCSRFToken();
+    const response = await fetch('/api/v1/comments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken,
+      },
+      body: JSON.stringify({ ...commentData, tweet_id: tweetId }),
+    });
+
+    if (response.status === 401) {
+      window.location.href = '/users/sign_in';
+      return;
+    }
+
+    const newComment = await response.json();
+    setCommentData({ body: '' });
+
+    onCommentAdded(newComment.data);
+  };
+
   return (
     <Card className="p-3 mb-3 shadow-sm card-black border border-primary rounded w-75">
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Control
             as="textarea"
             rows={3}
             placeholder="Post your reply"
             className="tweet-textarea bg-secondary"
+            onChange={handleInputChange}
+            value={commentData.body}
           />
         </Form.Group>
         <Row>

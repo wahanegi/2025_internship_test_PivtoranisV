@@ -1,18 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { getDisplayTime } from '../utils';
 
-const Comments = ({ tweetId }) => {
-  const [comments, setComments] = useState([]);
-
-  useEffect(() => {
-    const fetchComments = async () => {
-      const response = await fetch(`/api/v1/tweets/${tweetId}/comments`);
-      const commentsData = await response.json();
-      setComments(commentsData.data);
-    };
-    fetchComments();
-  }, []);
-
+const Comments = ({ comments }) => {
   return (
     <>
       {comments.map((comment) => {
@@ -37,4 +26,5 @@ const Comments = ({ tweetId }) => {
     </>
   );
 };
+
 export default Comments;

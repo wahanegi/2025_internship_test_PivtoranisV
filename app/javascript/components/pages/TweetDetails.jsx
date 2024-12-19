@@ -13,6 +13,7 @@ const TweetDetails = () => {
   const [author, setAuthor] = useState(null);
   const [likes, setLikes] = useState({});
   const [likedTweets, setLikedTweets] = useState([]);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     const fetchTweet = async () => {
@@ -24,6 +25,13 @@ const TweetDetails = () => {
       );
       setAuthor(authorData);
     };
+
+    const fetchComments = async () => {
+      const response = await fetch(`/api/v1/tweets/${id}/comments`);
+      const commentsData = await response.json();
+      setComments(commentsData.data);
+    };
+
     const fetchCurrentUser = async () => {
       try {
         const response = await fetch('/api/v1/users', {
@@ -47,15 +55,18 @@ const TweetDetails = () => {
         console.error('Failed to fetch user:', error);
       }
     };
+
     const fetchLikes = async () => {
       const response = await fetch(`/api/v1/likes`);
       const likesData = await response.json();
       setLikes(likesData);
     };
+
     fetchCurrentUser();
     fetchTweet();
     fetchLikes();
-  }, []);
+    fetchComments();
+  }, [id]);
 
   const likeCount = likes[id] || 0;
 
@@ -99,6 +110,10 @@ const TweetDetails = () => {
     });
   };
 
+  const handleCommentAdded = (newComment) => {
+    setComments((prevComments) => [newComment, ...prevComments]);
+  };
+
   return (
     <Container fluid className="vh-100 my-2">
       <Row className="h-100 gap-2">
@@ -122,12 +137,15 @@ const TweetDetails = () => {
               />
               <Row>
                 <Col className="d-flex flex-column align-items-center">
-                  <AddComment />
+                  <AddComment
+                    tweetId={id}
+                    onCommentAdded={handleCommentAdded}
+                  />
                 </Col>
               </Row>
               <Row>
                 <Col className="d-flex flex-column align-items-center">
-                  <Comments tweetId={id} />
+                  <Comments tweetId={id} comments={comments} />
                 </Col>
               </Row>
             </>
