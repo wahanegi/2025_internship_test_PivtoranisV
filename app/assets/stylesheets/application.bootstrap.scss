@@ -17,6 +17,7 @@ body {
 
 .custom-hover:hover {
   cursor: pointer;
+  background-color: rgb(32, 32, 32);
 }
 
 .dropdown-menu {
@@ -49,4 +50,8 @@ body {
 .action-links-hover:hover {
   color: rgb(249, 24, 128);
   cursor: pointer;
+}
+
+.modal-content {
+  background-color: $secondary;
 }

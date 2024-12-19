@@ -6,6 +6,7 @@ import {
   format,
 } from 'date-fns';
 import TweetActionLinks from './TweetActionLinks';
+import { useNavigate } from 'react-router-dom';
 
 const Tweet = ({
   content,
@@ -17,7 +18,12 @@ const Tweet = ({
   isLiked,
   likeId,
   removeLikes,
+  sentFromDetails = false,
+  currentUser,
+  authorId,
 }) => {
+  const navigate = useNavigate();
+
   const parsedDate = parseISO(date);
   const daysDifference = differenceInDays(new Date(), parsedDate);
 
@@ -26,22 +32,42 @@ const Tweet = ({
       ? formatDistanceToNow(parsedDate, { addSuffix: true })
       : format(parsedDate, 'MMM dd, yy');
 
+  const handleNavigate = () => {
+    if (!sentFromDetails) {
+      navigate(`/tweets/${tweetId}`);
+    }
+  };
+
   return (
-    <section className="custom-hover border border-secondary py-3 px-3 card-black my-3">
+    <section
+      className={`border border-secondary py-3 px-3 card-black my-3 ${
+        sentFromDetails ? '' : 'custom-hover'
+      }`}
+      onClick={handleNavigate}
+    >
       <div>
         <p className="mb-1 text-secondary small">
           <span className="fw-bolder fs-6">@{author}</span> · {displayTime}
         </p>
         <p className="mb-0 lh-lg">{content}</p>
       </div>
-      <TweetActionLinks
-        likes={likes}
-        tweetId={tweetId}
-        addLikes={addLikes}
-        isLiked={isLiked}
-        likeId={likeId}
-        removeLikes={removeLikes}
-      />
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className={`${sentFromDetails ? 'w-100' : 'w-50'}`}
+      >
+        <TweetActionLinks
+          likes={likes}
+          tweetId={tweetId}
+          addLikes={addLikes}
+          isLiked={isLiked}
+          likeId={likeId}
+          removeLikes={removeLikes}
+          sentFromDetails={sentFromDetails}
+          currentUser={currentUser}
+          authorId={authorId}
+          content={content}
+        />
+      </div>
     </section>
   );
 };

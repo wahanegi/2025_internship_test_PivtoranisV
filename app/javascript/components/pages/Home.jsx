@@ -6,7 +6,7 @@ import RightSidebar from '../RightSidebar';
 
 const Home = () => {
   const [currentUser, setCurrentUser] = useState(null);
-
+  const [likedTweets, setLikedTweets] = useState([]);
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
@@ -25,6 +25,7 @@ const Home = () => {
         } else {
           const userData = await response.json();
           setCurrentUser(userData.data);
+          setLikedTweets(userData.data.attributes.liked_tweets_with_ids);
         }
       } catch (error) {
         console.error('Failed to fetch user:', error);
@@ -38,7 +39,11 @@ const Home = () => {
     <Container fluid className="vh-100 my-2">
       <Row className="h-100 gap-2">
         <LeftSidebar user={currentUser} />
-        <MainContent user={currentUser} />
+        <MainContent
+          user={currentUser}
+          likedTweets={likedTweets}
+          setLikedTweets={setLikedTweets}
+        />
         <RightSidebar user={currentUser} />
       </Row>
     </Container>

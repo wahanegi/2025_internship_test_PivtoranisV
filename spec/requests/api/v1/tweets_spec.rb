@@ -49,6 +49,49 @@ RSpec.describe "Api::V1::Tweets", type: :request do
     end
   end
 
+  describe "GET show/:id" do
+    let!(:user) { create(:user) }
+    let!(:tweet) { create(:tweet) }
+    let(:json_response) { JSON.parse(response.body) }
+
+    before { get "/api/v1/tweets/#{tweet.id}" }
+
+    it "returns http success" do
+      expect(response).to have_http_status(:success)
+    end
+
+    it "returns JSON format" do
+      expect(response.content_type).to eq("application/json; charset=utf-8")
+    end
+
+    it "returns just one tweet" do
+      expect(json_response['data']).not_to be_nil
+      expect(json_response['data']['id']).to eq(tweet.id.to_s)
+    end
+
+    it "returns the correct tweet content" do
+      expect(json_response['data']['attributes']['content']).to eq(tweet.content)
+    end
+
+    it "responds in JSON:API format" do
+      expect(json_response).to have_key('data')
+      expect(json_response['data']).to have_key('attributes')
+      expect(json_response['data']).to have_key('relationships')
+      expect(json_response['data']['relationships']).to have_key('user')
+    end
+    context "when the tweet does not exist" do
+      before { get "/api/v1/tweets/not_existing_id" }
+
+      it "returns http not found" do
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it "returns an error message" do
+        expect(json_response['error']).to eq('Tweet not found')
+      end
+    end
+  end
+
   describe "POST /create" do
     include Devise::Test::IntegrationHelpers
     let!(:user) { create(:user) }
@@ -100,6 +143,125 @@ RSpec.describe "Api::V1::Tweets", type: :request do
 
       it "returns error messages in the response" do
         expect(json_response['errors']).to include("Content can't be blank")
+      end
+    end
+  end
+
+  describe "PATCH update/:id" do
+    include Devise::Test::IntegrationHelpers
+    let!(:user) { create(:user) }
+    let!(:other_user) { create(:user) }
+    let!(:tweet) { create(:tweet, user: user, content: "Original content") }
+    let(:valid_attributes) { { content: "Updated content" } }
+    let(:invalid_attributes) { { content: "" } }
+    let(:headers) { { "Content-Type" => "application/json" } }
+    let(:json_response) { JSON.parse(response.body) }
+
+    before { sign_in user }
+
+    context "when the request is valid" do
+      before { patch "/api/v1/tweets/#{tweet.id}", params: valid_attributes.to_json, headers: headers }
+
+      it "returns http status success" do
+        expect(response).to have_http_status(:success)
+      end
+
+      it "updates the tweet content" do
+        expect(tweet.reload.content).to eq(valid_attributes[:content])
+      end
+
+      it "returns the updated tweet in JSON:API format" do
+        expect(json_response).to have_key('data')
+        expect(json_response['data']).to have_key('attributes')
+        expect(json_response['data']['attributes']['content']).to eq(valid_attributes[:content])
+      end
+    end
+
+    context "when the request is invalid" do
+      before { patch "/api/v1/tweets/#{tweet.id}", params: invalid_attributes.to_json, headers: headers }
+
+      it "does not update the tweet content" do
+        expect(tweet.reload.content).to eq("Original content")
+      end
+
+      it "returns http status unprocessable entity" do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "returns error messages in the response" do
+        expect(json_response['errors']).to include("Content can't be blank")
+      end
+    end
+
+    context "when the user is unauthorized" do
+      before do
+        sign_out user
+        sign_in other_user
+        patch "/api/v1/tweets/#{tweet.id}", params: valid_attributes.to_json, headers: headers
+      end
+
+      it "does not update the tweet" do
+        expect(tweet.reload.content).to eq("Original content")
+      end
+
+      it "returns http status unauthorized" do
+        expect(response).to have_http_status(:unauthorized)
+      end
+
+      it "returns an error message" do
+        expect(json_response['error']).to eq("You are not authorized to perform this action.")
+      end
+    end
+  end
+
+  describe "DELETE destroy/:id" do
+    include Devise::Test::IntegrationHelpers
+    let!(:user) { create(:user) }
+    let!(:other_user) { create(:user) }
+    let!(:tweet) { create(:tweet, user: user) }
+    let(:headers) { { "Content-Type" => "application/json" } }
+    let(:json_response) { JSON.parse(response.body) }
+
+    before { sign_in user }
+
+    context "when the request is valid" do
+      it "returns http status success" do
+        delete "/api/v1/tweets/#{tweet.id}", headers: headers
+        expect(response).to have_http_status(:success)
+      end
+
+      it "deletes the tweet" do
+        expect {
+          delete "/api/v1/tweets/#{tweet.id}", headers: headers
+        }.to change(Tweet, :count).by(-1)
+      end
+
+      it "returns a success message" do
+        delete "/api/v1/tweets/#{tweet.id}", headers: headers
+        expect(json_response['message']).to eq("Tweet deleted successfully.")
+      end
+    end
+
+    context "when the user is unauthorized" do
+      before do
+        sign_out user
+        sign_in other_user
+      end
+
+      it "does not delete the tweet" do
+        expect {
+          delete "/api/v1/tweets/#{tweet.id}", headers: headers
+        }.not_to change(Tweet, :count)
+      end
+
+      it "returns http status unauthorized" do
+        delete "/api/v1/tweets/#{tweet.id}", headers: headers
+        expect(response).to have_http_status(:unauthorized)
+      end
+
+      it "returns an error message" do
+        delete "/api/v1/tweets/#{tweet.id}", headers: headers
+        expect(json_response['error']).to eq("You are not authorized to perform this action.")
       end
     end
   end

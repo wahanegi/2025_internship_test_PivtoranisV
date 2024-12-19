@@ -12,8 +12,9 @@ const Suggestions = () => {
           </InputGroup.Text>
           <FormControl
             type="text"
-            placeholder="Search"
+            placeholder="The right section is only for styling purposes"
             className="mr-sm-2 bg-secondary border-0 search"
+            disabled
           />
         </InputGroup>
       </Form>

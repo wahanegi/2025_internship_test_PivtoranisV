@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { FaRegHeart, FaHeart } from 'react-icons/fa';
+import { FaRegHeart, FaHeart, FaEdit } from 'react-icons/fa';
 import { FiMessageCircle } from 'react-icons/fi';
+import { MdDelete } from 'react-icons/md';
+import EditTweet from './EditTweet';
 import { getCSRFToken } from '../utils';
 
 const TweetActionLinks = ({
@@ -10,8 +12,13 @@ const TweetActionLinks = ({
   isLiked,
   likeId,
   removeLikes,
+  sentFromDetails,
+  currentUser,
+  authorId,
+  content,
 }) => {
   const [tweetLiked, setTweetLiked] = useState(isLiked);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const handleLikeClick = async () => {
     const csrfToken = getCSRFToken();
@@ -30,7 +37,7 @@ const TweetActionLinks = ({
       return;
     }
     const newLike = await response.json();
-    addLikes(newLike.tweet_id);
+    addLikes(newLike.tweet_id, newLike.id);
     setTweetLiked(true);
   };
 
@@ -45,10 +52,32 @@ const TweetActionLinks = ({
       },
     });
     setTweetLiked(false);
-    removeLikes(tweetId);
+    removeLikes(Number(tweetId));
   };
+
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete this tweet?')) return;
+    const csrfToken = getCSRFToken();
+
+    const response = await fetch(`/api/v1/tweets/${tweetId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken,
+      },
+    });
+
+    if (response.ok) {
+      window.location.href = '/';
+    } else if (response.status === 401) {
+      alert('You are not authorized to delete this tweet.');
+    } else {
+      alert('Failed to delete the tweet. Please try again.');
+    }
+  };
+
   return (
-    <div className="d-flex justify-content-evenly">
+    <div className="d-flex justify-content-between">
       <div className="d-flex align-items-center gap-1 action-links-hover p-1 rounded">
         {tweetLiked ? (
           <button
@@ -67,13 +96,39 @@ const TweetActionLinks = ({
             <FaRegHeart /> <span>{likes}</span>
           </button>
         )}
+
+        <button
+          type="button"
+          className="btn d-flex align-items-center gap-1 action-links-hover"
+        >
+          <FiMessageCircle /> <span>15</span>
+        </button>
       </div>
-      <button
-        type="button"
-        className="btn d-flex align-items-center gap-1 action-links-hover"
-      >
-        <FiMessageCircle /> <span>15</span>
-      </button>
+      <div className="d-flex align-items-center gap-1 action-links-hover p-1 rounded">
+        {sentFromDetails && currentUser.id === authorId && (
+          <>
+            <button
+              type="button"
+              className="btn d-flex align-items-center gap-1 action-links-hover"
+              onClick={() => setShowEditModal(true)}
+            >
+              <FaEdit />
+            </button>
+            <button
+              type="button"
+              className="btn d-flex align-items-center gap-1 action-links-hover"
+              onClick={handleDelete}
+            >
+              <MdDelete />
+            </button>
+          </>
+        )}
+      </div>
+      <EditTweet
+        show={showEditModal}
+        handleClose={() => setShowEditModal(false)}
+        content={content}
+      />
     </div>
   );
 };
