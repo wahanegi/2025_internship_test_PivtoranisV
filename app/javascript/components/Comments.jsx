@@ -1,7 +1,9 @@
 import React from 'react';
 import { getDisplayTime } from '../utils';
+import { FaEdit } from 'react-icons/fa';
+import { MdDelete } from 'react-icons/md';
 
-const Comments = ({ comments }) => {
+const Comments = ({ comments, currentUser }) => {
   return (
     <>
       {comments.map((comment) => {
@@ -20,6 +22,22 @@ const Comments = ({ comments }) => {
               </p>
               <p className="mb-0 lh-lg">{comment?.attributes.body}</p>
             </div>
+            {currentUser?.id === comment.relationships.user.data.id && (
+              <div className="d-flex justify-content-end">
+                <button
+                  type="button"
+                  className="btn d-flex align-items-center gap-1 action-links-hover"
+                >
+                  <FaEdit />
+                </button>
+                <button
+                  type="button"
+                  className="btn d-flex align-items-center gap-1 action-links-hover"
+                >
+                  <MdDelete />
+                </button>
+              </div>
+            )}
           </section>
         );
       })}

@@ -145,7 +145,11 @@ const TweetDetails = () => {
               </Row>
               <Row>
                 <Col className="d-flex flex-column align-items-center">
-                  <Comments tweetId={id} comments={comments} />
+                  <Comments
+                    tweetId={id}
+                    comments={comments}
+                    currentUser={currentUser}
+                  />
                 </Col>
               </Row>
             </>
