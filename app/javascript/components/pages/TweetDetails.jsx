@@ -66,14 +66,11 @@ const TweetDetails = () => {
   const addLikes = (tweetId, newLikeId) => {
     setLikedTweets((prevLikedTweets) => {
       const isAlreadyLiked = prevLikedTweets.some(
-        (likedTweet) => likedTweet.tweet_id === Number(tweetId)
+        (likedTweet) => likedTweet.tweet_id === tweetId
       );
       if (isAlreadyLiked) return prevLikedTweets;
 
-      return [
-        ...prevLikedTweets,
-        { tweet_id: Number(tweetId), like_id: newLikeId },
-      ];
+      return [...prevLikedTweets, { tweet_id: tweetId, like_id: newLikeId }];
     });
 
     setLikes((prevLikes) => {
@@ -85,12 +82,12 @@ const TweetDetails = () => {
   const removeLikes = (tweetId) => {
     setLikedTweets((prevLikedTweets) => {
       const isAlreadyUnliked = !prevLikedTweets.some(
-        (likedTweet) => likedTweet.tweet_id === Number(tweetId)
+        (likedTweet) => likedTweet.tweet_id === tweetId
       );
       if (isAlreadyUnliked) return prevLikedTweets;
 
       return prevLikedTweets.filter(
-        (likedTweet) => likedTweet.tweet_id !== Number(tweetId)
+        (likedTweet) => likedTweet.tweet_id !== tweetId
       );
     });
 

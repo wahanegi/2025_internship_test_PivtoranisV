@@ -52,7 +52,7 @@ const TweetActionLinks = ({
       },
     });
     setTweetLiked(false);
-    removeLikes(tweetId);
+    removeLikes(Number(tweetId));
   };
 
   const handleDelete = async () => {
