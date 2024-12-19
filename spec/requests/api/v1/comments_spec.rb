@@ -55,4 +55,60 @@ RSpec.describe "Api::V1::Comments", type: :request do
       end
     end
   end
+
+  describe "POST /create" do
+    include Devise::Test::IntegrationHelpers
+    let!(:user) { create(:user) }
+    let!(:tweet) { create(:tweet) }
+    let(:valid_attributes) { { body: "This is a valid comment", tweet_id: tweet.id } }
+    let(:invalid_attributes) { { body: "", tweet_id: tweet.id  } }
+    let(:headers) { { "Content-Type" => "application/json" } }
+    let(:json_response) { JSON.parse(response.body) }
+
+    before do
+      sign_in user
+    end
+
+    context "when the request is valid" do
+      before { post "/api/v1/comments", params: valid_attributes.to_json, headers: headers }
+
+      it "returns http status created" do
+        expect(response).to have_http_status(:created)
+      end
+
+      it "creates a new comment" do
+        expect {
+          post "/api/v1/comments", params: valid_attributes.to_json, headers: headers
+        }.to change(Comment, :count).by(1)
+      end
+
+      it "returns the correct created comment body" do
+        expect(json_response['data']['attributes']['body']).to eq(valid_attributes[:body])
+      end
+
+      it "returns the created comment in JSON:API format" do
+        expect(json_response).to have_key('data')
+        expect(json_response['data']).to have_key('attributes')
+        expect(json_response['data']).to have_key('relationships')
+      end
+    end
+
+    context "when the request is invalid" do
+      before { post "/api/v1/comments", params: invalid_attributes.to_json, headers: headers }
+
+      it "does not create a new comment" do
+        expect {
+          post "/api/v1/comments", params: invalid_attributes.to_json, headers: headers
+        }.not_to change(Comment, :count)
+      end
+
+      it "returns http status unprocessable entity" do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "returns error messages in the response" do
+        expect(json_response['errors']).to include("Body can't be blank")
+      end
+    end
+  end
 end
