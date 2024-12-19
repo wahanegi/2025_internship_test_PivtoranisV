@@ -3,7 +3,7 @@ import { Col } from 'react-bootstrap';
 import Tweet from './Tweet';
 import AddTweet from './AddTweet';
 
-const MainContent = ({ user }) => {
+const MainContent = ({ user, likedTweets, setLikedTweets }) => {
   const [tweets, setTweets] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [likes, setLikes] = useState({});
@@ -29,19 +29,40 @@ const MainContent = ({ user }) => {
     setTweets([normalizedTweet, ...tweets]);
   };
 
-  const addLikes = (tweetId) => {
+  const addLikes = (tweetId, newLikeId) => {
+    setLikedTweets((prevLikedTweets) => {
+      const isAlreadyLiked = prevLikedTweets.some(
+        (likedTweet) => likedTweet.tweet_id === Number(tweetId)
+      );
+      if (isAlreadyLiked) return prevLikedTweets;
+
+      return [
+        ...prevLikedTweets,
+        { tweet_id: Number(tweetId), like_id: newLikeId },
+      ];
+    });
+
     setLikes((prevLikes) => {
       const currentLikes = prevLikes[tweetId] || 0;
-
       return { ...prevLikes, [tweetId]: currentLikes + 1 };
     });
   };
 
   const removeLikes = (tweetId) => {
+    setLikedTweets((prevLikedTweets) => {
+      const isAlreadyUnliked = !prevLikedTweets.some(
+        (likedTweet) => likedTweet.tweet_id === Number(tweetId)
+      );
+      if (isAlreadyUnliked) return prevLikedTweets;
+
+      return prevLikedTweets.filter(
+        (likedTweet) => likedTweet.tweet_id !== Number(tweetId)
+      );
+    });
+
     setLikes((prevLikes) => {
       const currentLikes = prevLikes[tweetId] || 0;
-
-      return { ...prevLikes, [tweetId]: currentLikes - 1 };
+      return { ...prevLikes, [tweetId]: Math.max(currentLikes - 1, 0) };
     });
   };
 
@@ -59,7 +80,7 @@ const MainContent = ({ user }) => {
 
         const authorName = author?.attributes?.user_name;
         const likeCount = getLikeCount(tweet.id);
-        const likedTweets = user?.attributes?.liked_tweets_with_ids || [];
+
         const likedTweet = likedTweets.find(
           (likedTweet) => likedTweet.tweet_id === Number(tweet.id)
         );

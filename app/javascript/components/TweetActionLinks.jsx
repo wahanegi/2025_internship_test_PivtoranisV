@@ -37,7 +37,7 @@ const TweetActionLinks = ({
       return;
     }
     const newLike = await response.json();
-    addLikes(newLike.tweet_id);
+    addLikes(newLike.tweet_id, newLike.id);
     setTweetLiked(true);
   };
 
