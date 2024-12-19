@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import LeftSidebar from '../LeftSidebar';
 import { Col, Container, Row } from 'react-bootstrap';
 import Tweet from '../Tweet';
+import Comments from '../Comments';
 
 const TweetDetails = () => {
   const { id } = useParams();
@@ -103,20 +104,33 @@ const TweetDetails = () => {
         <LeftSidebar user={currentUser} />
         <Col>
           {tweet && author && (
-            <Tweet
-              content={tweet.attributes.content}
-              author={author.attributes.user_name}
-              date={tweet.attributes.created_at}
-              likes={likeCount}
-              tweetId={id}
-              addLikes={addLikes}
-              removeLikes={removeLikes}
-              isLiked={likeId !== null}
-              likeId={likeId}
-              sentFromDetails={true}
-              currentUser={currentUser}
-              authorId={author.id}
-            />
+            <>
+              <Tweet
+                content={tweet.attributes.content}
+                author={author.attributes.user_name}
+                date={tweet.attributes.created_at}
+                likes={likeCount}
+                tweetId={id}
+                addLikes={addLikes}
+                removeLikes={removeLikes}
+                isLiked={likeId !== null}
+                likeId={likeId}
+                sentFromDetails={true}
+                currentUser={currentUser}
+                authorId={author.id}
+              />
+              <Row>
+                <Col className="d-flex justify-content-center">
+                  <p>Post your reply</p>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="d-flex flex-column align-items-center">
+                  <Comments />
+                  <Comments />
+                </Col>
+              </Row>
+            </>
           )}
         </Col>
       </Row>
