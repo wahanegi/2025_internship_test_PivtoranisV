@@ -9,7 +9,7 @@ RSpec.describe "Api::V1::Comments", type: :request do
     let!(:comment2) { create(:comment, tweet: tweet, user: user2) }
     let(:json_response) { JSON.parse(response.body) }
 
-    before { get "/api/v1/comments", params: { id: tweet.id } }
+    before { get "/api/v1/tweets/#{tweet.id}/comments" }
 
     it "returns http success" do
       expect(response).to have_http_status(:success)
@@ -42,14 +42,14 @@ RSpec.describe "Api::V1::Comments", type: :request do
     context "when there are no comments" do
       it "returns an empty data array" do
         Comment.delete_all
-        get "/api/v1/comments", params: { id: tweet.id }
+        get "/api/v1/tweets/#{tweet.id}/comments"
         expect(json_response['data']).to eq([])
       end
     end
 
     context "when the tweet does not exist" do
       it "returns a 404 Not Found" do
-        get "/api/v1/comments", params: { id: 0 }
+        get "/api/v1/tweets/random_id/comments"
         expect(response).to have_http_status(:not_found)
         expect(json_response['error']).to eq("Tweet not found")
       end

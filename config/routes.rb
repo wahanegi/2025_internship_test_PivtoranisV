@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :tweets, only: [ :index, :create, :show, :update, :destroy ]
+      resources :tweets, only: [ :index, :create, :show, :update, :destroy ] do
+        resources :comments, only: [ :index ]
+      end
       resources :users, only: [ :index ]
       resources :likes, only: [ :index, :create, :destroy ]
-      resources :comments, only: [ :index, :create, :update, :destroy ]
+      resources :comments, only: [ :create, :update, :destroy ]
     end
   end
 

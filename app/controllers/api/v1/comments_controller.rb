@@ -4,7 +4,7 @@ class Api::V1::CommentsController < ApplicationController
   before_action :authorize_user!, only: [ :update, :destroy ]
 
   def index
-    tweet = Tweet.includes(:comments, comments: :user).find_by(id: params[:id])
+    tweet = Tweet.includes(:comments, comments: :user).find_by(id: params[:tweet_id])
 
     return render json: { error: "Tweet not found" }, status: :not_found unless tweet
 
