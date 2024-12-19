@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :comment do
-    user { nil }
-    tweet { nil }
-    body { "MyString" }
+    association :user
+    association :tweet
+    body { Faker::Lorem.paragraph[0, 255] }
   end
 end
