@@ -1,9 +1,30 @@
 import React from 'react';
-import { getDisplayTime } from '../utils';
+import { getCSRFToken, getDisplayTime } from '../utils';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 
-const Comments = ({ comments, currentUser }) => {
+const Comments = ({ comments, currentUser, onDeleteComment }) => {
+  const handleDelete = async (commentId) => {
+    if (!window.confirm('Are you sure you want to delete your comment?'))
+      return;
+    const csrfToken = getCSRFToken();
+
+    const response = await fetch(`/api/v1/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken,
+      },
+    });
+
+    if (response.ok) {
+      onDeleteComment(commentId);
+    } else if (response.status === 401) {
+      alert('You are not authorized to delete this tweet.');
+    } else {
+      alert('Failed to delete the tweet. Please try again.');
+    }
+  };
   return (
     <>
       {comments.map((comment) => {
@@ -33,6 +54,7 @@ const Comments = ({ comments, currentUser }) => {
                 <button
                   type="button"
                   className="btn d-flex align-items-center gap-1 action-links-hover"
+                  onClick={() => handleDelete(comment.id)}
                 >
                   <MdDelete />
                 </button>

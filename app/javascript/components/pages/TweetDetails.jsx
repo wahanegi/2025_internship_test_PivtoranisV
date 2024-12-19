@@ -114,6 +114,12 @@ const TweetDetails = () => {
     setComments((prevComments) => [newComment, ...prevComments]);
   };
 
+  const handleDeleteComment = (commentId) => {
+    setComments((prevComments) =>
+      prevComments.filter((comment) => comment.id !== commentId)
+    );
+  };
+
   return (
     <Container fluid className="vh-100 my-2">
       <Row className="h-100 gap-2">
@@ -146,9 +152,9 @@ const TweetDetails = () => {
               <Row>
                 <Col className="d-flex flex-column align-items-center">
                   <Comments
-                    tweetId={id}
                     comments={comments}
                     currentUser={currentUser}
+                    onDeleteComment={handleDeleteComment}
                   />
                 </Col>
               </Row>
