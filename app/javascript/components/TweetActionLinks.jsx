@@ -105,7 +105,7 @@ const TweetActionLinks = ({
         </button>
       </div>
       <div className="d-flex align-items-center gap-1 action-links-hover p-1 rounded">
-        {sentFromDetails && currentUser.id === authorId && (
+        {sentFromDetails && currentUser?.id === authorId && (
           <>
             <button
               type="button"

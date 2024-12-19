@@ -111,4 +111,72 @@ RSpec.describe "Api::V1::Comments", type: :request do
       end
     end
   end
+
+  describe "PATCH update/:id" do
+    include Devise::Test::IntegrationHelpers
+    let!(:user) { create(:user) }
+    let!(:other_user) { create(:user) }
+    let!(:tweet) { create(:tweet, user: user) }
+    let!(:comment) { create(:comment, user: user, tweet: tweet, body: "Original comment") }
+    let(:valid_attributes) { { body: "Updated comment", tweet_id: tweet.id  } }
+    let(:invalid_attributes) { { body: "", tweet_id: tweet.id  } }
+    let(:headers) { { "Content-Type" => "application/json" } }
+    let(:json_response) { JSON.parse(response.body) }
+
+    before { sign_in user }
+
+    context "when the request is valid" do
+      before { patch "/api/v1/comments/#{comment.id}", params: valid_attributes.to_json, headers: headers }
+
+      it "returns http status success" do
+        expect(response).to have_http_status(:success)
+      end
+
+      it "updates the comment body" do
+        expect(comment.reload.body).to eq(valid_attributes[:body])
+      end
+
+      it "returns the updated comment in JSON:API format" do
+        expect(json_response).to have_key('data')
+        expect(json_response['data']).to have_key('attributes')
+        expect(json_response['data']['attributes']['body']).to eq(valid_attributes[:body])
+      end
+    end
+
+    context "when the request is invalid" do
+      before { patch "/api/v1/comments/#{comment.id}", params: invalid_attributes.to_json, headers: headers }
+
+      it "does not update the comment body" do
+        expect(comment.reload.body).to eq("Original comment")
+      end
+
+      it "returns http status unprocessable entity" do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "returns error messages in the response" do
+        expect(json_response['errors']).to include("Body can't be blank")
+      end
+    end
+
+    context "when the user is unauthorized" do
+      before do
+        sign_out user
+        sign_in other_user
+        patch "/api/v1/comments/#{comment.id}", params: valid_attributes.to_json, headers: headers
+      end
+
+      it "does not update the comment" do
+        expect(comment.reload.body).to eq("Original comment")
+      end
+
+      it "returns http status unauthorized" do
+        expect(response).to have_http_status(:unauthorized)
+      end
+
+      it "returns an error message" do
+        expect(json_response['error']).to eq("You are not authorized to edit this comment.")
+      end
+    end
+  end
 end
