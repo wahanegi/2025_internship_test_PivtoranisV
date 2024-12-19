@@ -126,8 +126,7 @@ const TweetDetails = () => {
               </Row>
               <Row>
                 <Col className="d-flex flex-column align-items-center">
-                  <Comments />
-                  <Comments />
+                  <Comments tweetId={id} />
                 </Col>
               </Row>
             </>
