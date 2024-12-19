@@ -1,6 +1,7 @@
 class Api::V1::CommentsController < ApplicationController
   before_action :authenticate_user!, only: [ :create, :update, :destroy ]
   before_action :set_comment, only: [ :update, :destroy ]
+  before_action :authorize_user!, only: [ :update, :destroy ]
 
   def index
     tweet = Tweet.includes(:comments, comments: :user).find_by(id: params[:id])
@@ -23,8 +24,6 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def update
-    return render json: { error: "You are not authorized to edit this comment." }, status: :unauthorized unless authorized_user?
-
     if @comment.update(comment_params)
       render json: CommentSerializer.new(@comment).serializable_hash
     else
@@ -33,6 +32,8 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def destroy
+    @comment.destroy
+    render json: { message: "Comment deleted successfully." }, status: :ok
   end
 
   private
@@ -44,7 +45,7 @@ class Api::V1::CommentsController < ApplicationController
     @comment = Comment.find_by(id: params[:id])
   end
 
-  def authorized_user?
-    current_user.id == @comment.user_id
+  def authorize_user!
+    render json: { error: "You are not authorized to perform this action." }, status: :unauthorized unless current_user.id == @comment.user_id
   end
 end

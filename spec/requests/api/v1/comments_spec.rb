@@ -175,7 +175,55 @@ RSpec.describe "Api::V1::Comments", type: :request do
       end
 
       it "returns an error message" do
-        expect(json_response['error']).to eq("You are not authorized to edit this comment.")
+        expect(json_response['error']).to eq("You are not authorized to perform this action.")
+      end
+    end
+  end
+
+  describe "DELETE /destroy/:id" do
+    include Devise::Test::IntegrationHelpers
+    let!(:user) { create(:user) }
+    let!(:other_user) { create(:user) }
+    let!(:tweet) { create(:tweet, user: user) }
+    let!(:comment) { create(:comment, user: user, tweet: tweet) }
+    let(:headers) { { "Content-Type" => "application/json" } }
+    let(:json_response) { JSON.parse(response.body) }
+
+    before { sign_in user }
+
+    context "when the user is authorized" do
+      before { delete "/api/v1/comments/#{comment.id}", headers: headers }
+
+      it "returns http status success" do
+        expect(response).to have_http_status(:success)
+      end
+
+      it "deletes the comment" do
+        expect(Comment.find_by(id: comment.id)).to be_nil
+      end
+
+      it "returns a success message" do
+        expect(json_response['message']).to eq("Comment deleted successfully.")
+      end
+    end
+
+    context "when the user is unauthorized" do
+      before do
+        sign_out user
+        sign_in other_user
+        delete "/api/v1/comments/#{comment.id}", headers: headers
+      end
+
+      it "does not delete the comment" do
+        expect(Comment.find_by(id: comment.id)).not_to be_nil
+      end
+
+      it "returns http status unauthorized" do
+        expect(response).to have_http_status(:unauthorized)
+      end
+
+      it "returns an error message" do
+        expect(json_response['error']).to eq("You are not authorized to perform this action.")
       end
     end
   end
