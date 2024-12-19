@@ -10,6 +10,7 @@ const TweetDetails = () => {
   const [tweet, setTweet] = useState(null);
   const [author, setAuthor] = useState(null);
   const [likes, setLikes] = useState({});
+  const [likedTweets, setLikedTweets] = useState([]);
 
   useEffect(() => {
     const fetchTweet = async () => {
@@ -38,6 +39,7 @@ const TweetDetails = () => {
         } else {
           const userData = await response.json();
           setCurrentUser(userData.data);
+          setLikedTweets(userData.data.attributes.liked_tweets_with_ids);
         }
       } catch (error) {
         console.error('Failed to fetch user:', error);
@@ -54,28 +56,50 @@ const TweetDetails = () => {
   }, []);
 
   const likeCount = likes[id] || 0;
-  const likedTweets = currentUser?.attributes?.liked_tweets_with_ids || [];
+
   const likedTweet = likedTweets.find(
     (likedTweet) => likedTweet.tweet_id === Number(id)
   );
 
   const likeId = likedTweet ? likedTweet.like_id : null;
 
-  const addLikes = (tweetId) => {
+  const addLikes = (tweetId, newLikeId) => {
+    setLikedTweets((prevLikedTweets) => {
+      const isAlreadyLiked = prevLikedTweets.some(
+        (likedTweet) => likedTweet.tweet_id === Number(tweetId)
+      );
+      if (isAlreadyLiked) return prevLikedTweets;
+
+      return [
+        ...prevLikedTweets,
+        { tweet_id: Number(tweetId), like_id: newLikeId },
+      ];
+    });
+
     setLikes((prevLikes) => {
       const currentLikes = prevLikes[tweetId] || 0;
-
       return { ...prevLikes, [tweetId]: currentLikes + 1 };
     });
   };
 
   const removeLikes = (tweetId) => {
+    setLikedTweets((prevLikedTweets) => {
+      const isAlreadyUnliked = !prevLikedTweets.some(
+        (likedTweet) => likedTweet.tweet_id === Number(tweetId)
+      );
+      if (isAlreadyUnliked) return prevLikedTweets;
+
+      return prevLikedTweets.filter(
+        (likedTweet) => likedTweet.tweet_id !== Number(tweetId)
+      );
+    });
+
     setLikes((prevLikes) => {
       const currentLikes = prevLikes[tweetId] || 0;
-
-      return { ...prevLikes, [tweetId]: currentLikes - 1 };
+      return { ...prevLikes, [tweetId]: Math.max(currentLikes - 1, 0) };
     });
   };
+
   return (
     <Container fluid className="vh-100 my-2">
       <Row className="h-100 gap-2">
