@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { getCSRFToken, getDisplayTime } from '../utils';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
+import EditComment from './EditComment';
 
-const Comments = ({ comments, currentUser, onDeleteComment }) => {
+const Comments = ({ comments, currentUser, onDeleteComment, setComments }) => {
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [commentToEdit, setCommentToEdit] = useState(null);
+
   const handleDelete = async (commentId) => {
     if (!window.confirm('Are you sure you want to delete your comment?'))
       return;
@@ -20,11 +24,29 @@ const Comments = ({ comments, currentUser, onDeleteComment }) => {
     if (response.ok) {
       onDeleteComment(commentId);
     } else if (response.status === 401) {
-      alert('You are not authorized to delete this tweet.');
+      alert('You are not authorized to delete this comment.');
     } else {
-      alert('Failed to delete the tweet. Please try again.');
+      alert('Failed to delete the comment. Please try again.');
     }
   };
+
+  const handleEdit = (comment) => {
+    setCommentToEdit(comment);
+    setShowEditModal(true);
+  };
+
+  const onUpdateComment = (updatedComment) => {
+    setComments((prevComments) =>
+      prevComments.map((comment) =>
+        comment.id === updatedComment.id
+          ? { ...comment, attributes: updatedComment.attributes }
+          : comment
+      )
+    );
+    setCommentToEdit(null);
+    setShowEditModal(false);
+  };
+
   return (
     <>
       {comments.map((comment) => {
@@ -48,6 +70,7 @@ const Comments = ({ comments, currentUser, onDeleteComment }) => {
                 <button
                   type="button"
                   className="btn d-flex align-items-center gap-1 action-links-hover"
+                  onClick={() => handleEdit(comment)}
                 >
                   <FaEdit />
                 </button>
@@ -63,6 +86,15 @@ const Comments = ({ comments, currentUser, onDeleteComment }) => {
           </section>
         );
       })}
+      {commentToEdit && (
+        <EditComment
+          show={showEditModal}
+          handleClose={() => setShowEditModal(false)}
+          body={commentToEdit?.attributes.body}
+          commentId={commentToEdit.id}
+          onUpdateComment={onUpdateComment}
+        />
+      )}
     </>
   );
 };

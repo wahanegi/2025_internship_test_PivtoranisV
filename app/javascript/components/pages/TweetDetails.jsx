@@ -153,6 +153,7 @@ const TweetDetails = () => {
                 <Col className="d-flex flex-column align-items-center">
                   <Comments
                     comments={comments}
+                    setComments={setComments}
                     currentUser={currentUser}
                     onDeleteComment={handleDeleteComment}
                   />
