@@ -4,6 +4,7 @@ import { FiMessageCircle } from 'react-icons/fi';
 import { MdDelete } from 'react-icons/md';
 import EditTweet from './EditTweet';
 import { getCSRFToken } from '../utils';
+import { useNavigate } from 'react-router-dom';
 
 const TweetActionLinks = ({
   likes,
@@ -16,9 +17,15 @@ const TweetActionLinks = ({
   currentUser,
   authorId,
   content,
+  totalReply,
 }) => {
   const [tweetLiked, setTweetLiked] = useState(isLiked);
   const [showEditModal, setShowEditModal] = useState(false);
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate(`/tweets/${tweetId}`);
+  };
 
   const handleLikeClick = async () => {
     const csrfToken = getCSRFToken();
@@ -100,12 +107,13 @@ const TweetActionLinks = ({
         <button
           type="button"
           className="btn d-flex align-items-center gap-1 action-links-hover"
+          onClick={handleNavigate}
         >
-          <FiMessageCircle /> <span>15</span>
+          <FiMessageCircle /> <span>{totalReply}</span>
         </button>
       </div>
       <div className="d-flex align-items-center gap-1 action-links-hover p-1 rounded">
-        {sentFromDetails && currentUser.id === authorId && (
+        {sentFromDetails && currentUser?.id === authorId && (
           <>
             <button
               type="button"

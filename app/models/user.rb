@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :tweets, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   USER_NAME_FORMAT = /\A[a-zA-Z0-9_]+\z/
   PASSWORD_SYMBOL_FORMAT = /\A(?=.*[^\w\s])[^\s]*\z/

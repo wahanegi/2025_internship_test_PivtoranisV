@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import LeftSidebar from '../LeftSidebar';
 import { Col, Container, Row } from 'react-bootstrap';
 import Tweet from '../Tweet';
+import Comments from '../Comments';
+import AddComment from '../AddComment';
 
 const TweetDetails = () => {
   const { id } = useParams();
@@ -11,6 +13,7 @@ const TweetDetails = () => {
   const [author, setAuthor] = useState(null);
   const [likes, setLikes] = useState({});
   const [likedTweets, setLikedTweets] = useState([]);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     const fetchTweet = async () => {
@@ -22,6 +25,13 @@ const TweetDetails = () => {
       );
       setAuthor(authorData);
     };
+
+    const fetchComments = async () => {
+      const response = await fetch(`/api/v1/tweets/${id}/comments`);
+      const commentsData = await response.json();
+      setComments(commentsData.data);
+    };
+
     const fetchCurrentUser = async () => {
       try {
         const response = await fetch('/api/v1/users', {
@@ -45,15 +55,18 @@ const TweetDetails = () => {
         console.error('Failed to fetch user:', error);
       }
     };
+
     const fetchLikes = async () => {
       const response = await fetch(`/api/v1/likes`);
       const likesData = await response.json();
       setLikes(likesData);
     };
+
     fetchCurrentUser();
     fetchTweet();
     fetchLikes();
-  }, []);
+    fetchComments();
+  }, [id]);
 
   const likeCount = likes[id] || 0;
 
@@ -97,26 +110,57 @@ const TweetDetails = () => {
     });
   };
 
+  const handleCommentAdded = (newComment) => {
+    setComments((prevComments) => [newComment, ...prevComments]);
+  };
+
+  const handleDeleteComment = (commentId) => {
+    setComments((prevComments) =>
+      prevComments.filter((comment) => comment.id !== commentId)
+    );
+  };
+
   return (
     <Container fluid className="vh-100 my-2">
       <Row className="h-100 gap-2">
         <LeftSidebar user={currentUser} />
         <Col>
           {tweet && author && (
-            <Tweet
-              content={tweet.attributes.content}
-              author={author.attributes.user_name}
-              date={tweet.attributes.created_at}
-              likes={likeCount}
-              tweetId={id}
-              addLikes={addLikes}
-              removeLikes={removeLikes}
-              isLiked={likeId !== null}
-              likeId={likeId}
-              sentFromDetails={true}
-              currentUser={currentUser}
-              authorId={author.id}
-            />
+            <>
+              <Tweet
+                content={tweet.attributes.content}
+                author={author.attributes.user_name}
+                date={tweet.attributes.created_at}
+                likes={likeCount}
+                tweetId={id}
+                addLikes={addLikes}
+                removeLikes={removeLikes}
+                isLiked={likeId !== null}
+                likeId={likeId}
+                sentFromDetails={true}
+                currentUser={currentUser}
+                authorId={author.id}
+                totalReply={comments.length}
+              />
+              <Row>
+                <Col className="d-flex flex-column align-items-center">
+                  <AddComment
+                    tweetId={id}
+                    onCommentAdded={handleCommentAdded}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col className="d-flex flex-column align-items-center">
+                  <Comments
+                    comments={comments}
+                    setComments={setComments}
+                    currentUser={currentUser}
+                    onDeleteComment={handleDeleteComment}
+                  />
+                </Col>
+              </Row>
+            </>
           )}
         </Col>
       </Row>
