@@ -140,6 +140,7 @@ const TweetDetails = () => {
                 sentFromDetails={true}
                 currentUser={currentUser}
                 authorId={author.id}
+                totalReply={comments.length}
               />
               <Row>
                 <Col className="d-flex flex-column align-items-center">

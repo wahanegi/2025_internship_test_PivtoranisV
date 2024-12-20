@@ -16,6 +16,7 @@ const Tweet = ({
   sentFromDetails = false,
   currentUser,
   authorId,
+  totalReply,
 }) => {
   const navigate = useNavigate();
 
@@ -55,6 +56,7 @@ const Tweet = ({
           currentUser={currentUser}
           authorId={authorId}
           content={content}
+          totalReply={totalReply}
         />
       </div>
     </section>
