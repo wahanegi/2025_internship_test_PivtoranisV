@@ -63,7 +63,9 @@ const Comments = ({ comments, currentUser, onDeleteComment, setComments }) => {
                 </span>{' '}
                 · {displayTime}
               </p>
-              <p className="mb-0 lh-lg">{comment?.attributes.body}</p>
+              <p className="mb-0 lh-lg text-break">
+                {comment?.attributes.body}
+              </p>
             </div>
             {currentUser?.id === comment.relationships.user.data.id && (
               <div className="d-flex justify-content-end">
