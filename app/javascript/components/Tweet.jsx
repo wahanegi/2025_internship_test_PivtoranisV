@@ -39,7 +39,7 @@ const Tweet = ({
         <p className="mb-1 text-secondary small">
           <span className="fw-bolder fs-6">@{author}</span> · {displayTime}
         </p>
-        <p className="mb-0 lh-lg">{content}</p>
+        <p className="mb-0 lh-lg text-break">{content}</p>
       </div>
       <div
         onClick={(e) => e.stopPropagation()}
