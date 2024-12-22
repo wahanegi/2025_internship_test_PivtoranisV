@@ -56,7 +56,7 @@ const LeftSidebar = ({ user }) => {
           </Navbar>
           <Navbar>
             <Container>
-              <Navbar.Brand className="p-2">
+              <Navbar.Brand href="/about" className="custom-hover p-2 rounded">
                 <FaInfo className="text-primary h3 rounded" />
                 <span className="ms-4 text-light h5">About</span>
               </Navbar.Brand>
@@ -124,7 +124,7 @@ const LeftSidebar = ({ user }) => {
           </Navbar>
           <Navbar>
             <Container>
-              <Navbar.Brand className="p-2">
+              <Navbar.Brand href="/about" className="custom-hover p-2 rounded">
                 <FaInfo className="text-primary h3 rounded" />
                 <span className="ms-4 text-light h5">About</span>
               </Navbar.Brand>
