@@ -7,32 +7,39 @@ import EditComment from './EditComment';
 const Comments = ({ comments, currentUser, onDeleteComment, setComments }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleDelete = async (commentId) => {
     if (!window.confirm('Are you sure you want to delete your comment?'))
       return;
+
     const csrfToken = getCSRFToken();
+    try {
+      const response = await fetch(`/api/v1/comments/${commentId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
+        },
+      });
 
-    const response = await fetch(`/api/v1/comments/${commentId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken,
-      },
-    });
-
-    if (response.ok) {
-      onDeleteComment(commentId);
-    } else if (response.status === 401) {
-      alert('You are not authorized to delete this comment.');
-    } else {
-      alert('Failed to delete the comment. Please try again.');
+      if (response.ok) {
+        onDeleteComment(commentId);
+        setErrorMessage('');
+      } else if (response.status === 401) {
+        setErrorMessage('You are not authorized to delete this comment.');
+      } else {
+        setErrorMessage('Failed to delete the comment. Please try again.');
+      }
+    } catch (error) {
+      setErrorMessage('An unexpected error occurred. Please try again later.');
     }
   };
 
   const handleEdit = (comment) => {
     setCommentToEdit(comment);
     setShowEditModal(true);
+    setErrorMessage('');
   };
 
   const onUpdateComment = (updatedComment) => {
@@ -45,10 +52,16 @@ const Comments = ({ comments, currentUser, onDeleteComment, setComments }) => {
     );
     setCommentToEdit(null);
     setShowEditModal(false);
+    setErrorMessage('');
   };
 
   return (
     <>
+      {errorMessage && (
+        <div className="alert alert-danger small mb-3" role="alert">
+          {errorMessage}
+        </div>
+      )}
       {comments.map((comment) => {
         const displayTime = getDisplayTime(comment?.attributes.created_at);
         return (
