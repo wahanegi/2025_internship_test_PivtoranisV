@@ -51,7 +51,7 @@ const AddComment = ({ tweetId, onCommentAdded }) => {
   };
 
   return (
-    <Card className="p-3 mb-3 shadow-sm card-black border border-primary rounded w-75">
+    <Card className="p-3 mb-3 shadow-sm card-black border border-primary rounded">
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Control

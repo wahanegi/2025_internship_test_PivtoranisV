@@ -53,7 +53,7 @@ const Comments = ({ comments, currentUser, onDeleteComment, setComments }) => {
         const displayTime = getDisplayTime(comment?.attributes.created_at);
         return (
           <section
-            className="border border-primary py-3 px-3 my-3 w-75"
+            className="border border-primary py-3 px-3 my-3"
             key={comment.id}
           >
             <div>

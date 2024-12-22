@@ -106,7 +106,31 @@ const LeftSidebar = ({ user }) => {
           </Dropdown>
         </>
       ) : (
-        <FaTwitter className="text-primary h1 custom-hover" />
+        <>
+          <Navbar>
+            <Container>
+              <Navbar.Brand href="/" className="custom-hover p-2 rounded">
+                <FaTwitter className="text-primary h2" />
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          <Navbar className="w-75">
+            <Container>
+              <Navbar.Brand href="/" className="custom-hover p-2 rounded">
+                <FaHome className="text-primary h3 rounded" />
+                <span className="ms-4 text-light h5">Home</span>
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          <Navbar>
+            <Container>
+              <Navbar.Brand className="p-2">
+                <FaInfo className="text-primary h3 rounded" />
+                <span className="ms-4 text-light h5">About</span>
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+        </>
       )}
     </Col>
   );

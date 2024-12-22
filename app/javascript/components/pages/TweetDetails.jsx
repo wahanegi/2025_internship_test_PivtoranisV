@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import LeftSidebar from '../LeftSidebar';
 import { Col, Container, Row } from 'react-bootstrap';
+import LeftSidebar from '../LeftSidebar';
 import Tweet from '../Tweet';
 import Comments from '../Comments';
 import AddComment from '../AddComment';
+import RightSidebar from '../RightSidebar';
 
 const TweetDetails = () => {
   const { id } = useParams();
@@ -143,7 +144,7 @@ const TweetDetails = () => {
                 totalReply={comments.length}
               />
               <Row>
-                <Col className="d-flex flex-column align-items-center">
+                <Col className="d-flex flex-column">
                   <AddComment
                     tweetId={id}
                     onCommentAdded={handleCommentAdded}
@@ -151,7 +152,7 @@ const TweetDetails = () => {
                 </Col>
               </Row>
               <Row>
-                <Col className="d-flex flex-column align-items-center">
+                <Col className="d-flex flex-column">
                   <Comments
                     comments={comments}
                     setComments={setComments}
@@ -163,6 +164,7 @@ const TweetDetails = () => {
             </>
           )}
         </Col>
+        <RightSidebar user={currentUser} />
       </Row>
     </Container>
   );
