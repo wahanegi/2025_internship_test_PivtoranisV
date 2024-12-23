@@ -82,6 +82,7 @@ const TweetActionLinks = ({
       alert('Failed to delete the tweet. Please try again.');
     }
   };
+  // TODO: Implement totalReply count to be displayed in the main tweet list. Right now it works only in tweet details page.
 
   return (
     <div className="d-flex justify-content-between">

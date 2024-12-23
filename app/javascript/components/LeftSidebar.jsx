@@ -8,7 +8,7 @@ import {
   NavItem,
   NavLink,
 } from 'react-bootstrap';
-import { FaTwitter, FaHome, FaSearch, FaRegBell, FaUser } from 'react-icons/fa';
+import { FaTwitter, FaHome, FaInfo, FaRegBell, FaUser } from 'react-icons/fa';
 import { getCSRFToken } from '../utils';
 
 const LeftSidebar = ({ user }) => {
@@ -41,40 +41,43 @@ const LeftSidebar = ({ user }) => {
         <>
           <Navbar>
             <Container>
-              <Navbar.Brand href="/">
-                <FaTwitter className="text-primary h1 custom-hover" />
+              <Navbar.Brand href="/" className="custom-hover p-2 rounded">
+                <FaTwitter className="text-primary h2" />
               </Navbar.Brand>
             </Container>
           </Navbar>
-          <Navbar className="w-75 custom-hover">
+          <Navbar className="w-75">
             <Container>
-              <Navbar.Brand href="/">
-                <FaHome className="text-primary h2 rounded" />
-                <span className="ms-4 text-light h4">Home</span>
-              </Navbar.Brand>
-            </Container>
-          </Navbar>
-          <Navbar>
-            <Container>
-              <Navbar.Brand>
-                <FaSearch className="text-primary h2 rounded" />
-                <span className="ms-4 text-light h4">Explore</span>
+              <Navbar.Brand href="/" className="custom-hover p-2 rounded">
+                <FaHome className="text-primary h3 rounded" />
+                <span className="ms-4 text-light h5">Home</span>
               </Navbar.Brand>
             </Container>
           </Navbar>
           <Navbar>
             <Container>
-              <Navbar.Brand>
-                <FaRegBell className="text-primary h2 rounded" />
-                <span className="ms-4 text-light h4">Notifications</span>
+              <Navbar.Brand href="/about" className="custom-hover p-2 rounded">
+                <FaInfo className="text-primary h3 rounded" />
+                <span className="ms-4 text-light h5">About</span>
               </Navbar.Brand>
             </Container>
           </Navbar>
-          <Navbar className="w-75 custom-hover">
+          <Navbar>
             <Container>
-              <Navbar.Brand href="/users/edit">
-                <FaUser className="text-primary h2 rounded" />
-                <span className="ms-4 text-light h4">Profile</span>
+              <Navbar.Brand className="p-2">
+                <FaRegBell className="text-primary h3 rounded" />
+                <span className="ms-4 text-light h5">Notifications</span>
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          <Navbar className="w-75">
+            <Container>
+              <Navbar.Brand
+                href="/users/edit"
+                className="custom-hover p-2 rounded"
+              >
+                <FaUser className="text-primary h3 rounded" />
+                <span className="ms-4 text-light h5">Profile</span>
               </Navbar.Brand>
             </Container>
           </Navbar>
@@ -103,7 +106,31 @@ const LeftSidebar = ({ user }) => {
           </Dropdown>
         </>
       ) : (
-        <FaTwitter className="text-primary h1 custom-hover" />
+        <>
+          <Navbar>
+            <Container>
+              <Navbar.Brand href="/" className="custom-hover p-2 rounded">
+                <FaTwitter className="text-primary h2" />
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          <Navbar className="w-75">
+            <Container>
+              <Navbar.Brand href="/" className="custom-hover p-2 rounded">
+                <FaHome className="text-primary h3 rounded" />
+                <span className="ms-4 text-light h5">Home</span>
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          <Navbar>
+            <Container>
+              <Navbar.Brand href="/about" className="custom-hover p-2 rounded">
+                <FaInfo className="text-primary h3 rounded" />
+                <span className="ms-4 text-light h5">About</span>
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+        </>
       )}
     </Col>
   );
