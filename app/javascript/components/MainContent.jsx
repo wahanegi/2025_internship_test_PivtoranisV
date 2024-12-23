@@ -3,6 +3,8 @@ import { Col } from 'react-bootstrap';
 import Tweet from './Tweet';
 import AddTweet from './AddTweet';
 
+// TODO Add skeleton loaders while fetching data to improve the perception of performance.
+
 const MainContent = ({ user, likedTweets, setLikedTweets }) => {
   const [tweets, setTweets] = useState([]);
   const [authors, setAuthors] = useState([]);
@@ -66,6 +68,8 @@ const MainContent = ({ user, likedTweets, setLikedTweets }) => {
   const getLikeCount = (tweetId) => {
     return likes[tweetId] || 0;
   };
+
+  // TODO: Fix bag with authorName for newly created users. Right now it's not showing the author name for newly created users, it will work only after refreshing the page.
 
   return (
     <Col className="border-end border-start border-secondary h-100 overflow-auto">

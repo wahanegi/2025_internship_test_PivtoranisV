@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import TweetDetails from './pages/TweetDetails';
 import About from './pages/About';
 
+// TODO: Implement centralized state management (React Context API) for the entire application.
+
 const App = () => {
   return (
     <Router>

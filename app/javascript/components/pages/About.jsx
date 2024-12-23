@@ -77,9 +77,9 @@ const About = () => {
               <Card.Text className="text-secondary">
                 This project serves as a learning experience, combining React
                 for a dynamic user interface and Ruby on Rails for robust
-                backend support. Key features include:
+                backend support.
               </Card.Text>
-              <Card.Text className="text-secondary">
+              <Card.Text>
                 Thank you for exploring this Twitter clone. I hope you enjoy
                 using it as much as I enjoyed building it!
               </Card.Text>
