@@ -1,7 +1,5 @@
 # Internship Test
 
-### **[Production URL](https://internship-project-pivtoranisv-286306d1a130.herokuapp.com)**
-
 ### Elon Musk has destroyed Twitter and we need you to recreate it!
 
 ## Requirements
